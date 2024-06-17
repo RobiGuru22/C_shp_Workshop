@@ -87,21 +87,23 @@ namespace Hangman_workshop
                     return 0;
             }
         }
-        public static void GameWindow(char[] talalos, List<string> probak, int attemptsLeft, int talalatok)
+        public static string GameWindow(char[] inGameWord, List<string> triedCharList, int attemptsLeftCounter)
         {
             Console.Clear();
             Console.WriteLine("What could the word be?\n\n");
-            Console.WriteLine(new string(talalos) + "\n");
+            Console.WriteLine(new string(inGameWord) + "\n");
             Console.Write("Previous attempts: ");
-            foreach (var item in probak)
+            foreach (var item in triedCharList)
             {
                 Console.Write(item + ' ');
             }
-            Console.WriteLine($"\nAttempts left: {attemptsLeft}");
+            Console.WriteLine($"\nAttempts left: {attemptsLeftCounter}");
+            Console.Write("\nAttempt: ");
+            return Console.ReadLine().Substring(0, 1);
         }
-        public static void EndWindow(int attemptsLeft)
+        public static void EndWindow(int attemptsLeftCounter)
         {
-            if (attemptsLeft > 0) //win
+            if (attemptsLeftCounter > 0) //win
             {
                 Console.WriteLine("\nSuccess!!");
                 Console.WriteLine("\nWhy not another one:");
@@ -130,13 +132,13 @@ namespace Hangman_workshop
                         Console.WriteLine("\nInvalid input, please try again...");
                         Thread.Sleep(2000);
                         Console.Clear();
-                        EndWindow(attemptsLeft);
+                        EndWindow(attemptsLeftCounter);
                         break;
                     default:
                         Console.WriteLine("\nInvalid input, please try again...");
                         Thread.Sleep(2000);
                         Console.Clear();
-                        EndWindow(attemptsLeft);
+                        EndWindow(attemptsLeftCounter);
                         break;
                 }
             }
@@ -170,13 +172,13 @@ namespace Hangman_workshop
                         Console.WriteLine("\nInvalid input, please try again...");
                         Thread.Sleep(2000);
                         Console.Clear();
-                        EndWindow(attemptsLeft);
+                        EndWindow(attemptsLeftCounter);
                         break;
                     default:
                         Console.WriteLine("\nInvalid input, please try again...");
                         Thread.Sleep(2000);
                         Console.Clear();
-                        EndWindow(attemptsLeft);
+                        EndWindow(attemptsLeftCounter);
                         break;
                 }
             }
