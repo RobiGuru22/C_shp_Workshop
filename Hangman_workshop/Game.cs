@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hangman_workshop
-{
+namespace Hangman_workshop;
     public class Game
     {
         private static int Attempt(string attempt, string searchedWord, char[] inGameWord, List<string> triedCharList, int attemptsLeftCounter)
@@ -44,4 +43,3 @@ namespace Hangman_workshop
             Window.EndWindow(attemptsLeftCounter);
         } 
     }
-}

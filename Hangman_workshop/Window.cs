@@ -4,10 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hangman_workshop
-{
+namespace Hangman_workshop;
     public class Window
     {
+        private static void InvalidInputText()
+        {
+            Console.WriteLine("\nInvalid input, please try again...");
+            Thread.Sleep(2000);
+        }
+        private static void EndingScene(int attemptsLeftCounter)
+        {
+            Console.WriteLine("\nHow about another one:");
+            Console.WriteLine("[1]Why not");
+            Console.WriteLine("[0]Hell nah");
+
+            Console.Write("\nInput: ");
+
+            if (int.TryParse(Console.ReadLine(), out int input))
+            {
+                if (input == 1)
+                {
+                    DifficultyWindow();
+                }
+                else if (input == 0)
+                {
+                    MainWindow();
+                }
+                else
+                {
+                    InvalidInputText();
+                    Console.Clear();
+                    EndWindow(attemptsLeftCounter);
+                }
+            }
+            else
+            {
+                InvalidInputText();
+                Console.Clear();
+                EndWindow(attemptsLeftCounter); ;
+            }
+        }
+        
+        private static void VictoryText()
+        {
+            Console.WriteLine("\nSuccess!!");
+        }
+        private static void LoseText()
+        {
+            Console.WriteLine("\nOopsie, you have run out of attempts :c");
+        }
         public static int MainWindow()
         {
             Console.Clear();
@@ -16,31 +61,29 @@ namespace Hangman_workshop
             Console.WriteLine("[1]Start game");
             Console.WriteLine("[0]Quit\n");
             Console.Write("Input: ");
-            int input;
-            try
+            if (int.TryParse(Console.ReadLine(), out int input))
             {
-                input = Convert.ToInt32(Console.ReadLine());
-            }
-            catch
-            {
-                input = -1;
-            }
-            switch (input) 
-            {
-                case 1:
-                    return DifficultyWindow();
-                case 0:
+                if (input == 1)
+                {
+                    DifficultyWindow();
+                    return 0;
+                }
+                else if (input == 0)
+                {
                     return -1;
-                case -1:
-                    Console.WriteLine("\nInvalid input, please try again...");
-                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    InvalidInputText();
                     MainWindow();
                     return 0;
-                default:
-                    Console.WriteLine("\nInvalid input, please try again...");
-                    Thread.Sleep(2000);
-                    MainWindow();
-                    return 0;
+                }
+            }
+            else
+            {
+                InvalidInputText();
+                MainWindow();
+                return 0;
             }
         }
         public static int DifficultyWindow()
@@ -53,38 +96,29 @@ namespace Hangman_workshop
             Console.WriteLine("[0]Back to main menu\n");
             Console.Write("Input: ");
 
-            int input;
-
-            try
+            if(int.TryParse(Console.ReadLine(), out int input))
             {
-                input = Convert.ToInt32(Console.ReadLine());
-            }
-            catch
-            {
-                input = -1;
-            }
-
-            switch (input)
-            {
-                case 1:
+                if(1 <= input && input <= 3)
+                {
                     return input;
-                case 2:
-                    return input;
-                case 3:
-                    return input;
-                case 0:
+                }
+                else if(input == 0)
+                {
                     MainWindow();
                     return 0;
-                case -1:
-                    Console.WriteLine("\nInvalid input, please try again...");
-                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    InvalidInputText();
                     DifficultyWindow();
                     return 0;
-                default:
-                    Console.WriteLine("\nInvalid input, please try again...");
-                    Thread.Sleep(2000);
-                    DifficultyWindow();
-                    return 0;
+                }
+            }
+            else
+            {
+                InvalidInputText();
+                DifficultyWindow();
+                return 0;
             }
         }
         public static string GameWindow(char[] inGameWord, List<string> triedCharList, int attemptsLeftCounter)
@@ -103,85 +137,14 @@ namespace Hangman_workshop
         }
         public static void EndWindow(int attemptsLeftCounter)
         {
-            if (attemptsLeftCounter > 0) //win
+            if (attemptsLeftCounter > 0)
             {
-                Console.WriteLine("\nSuccess!!");
-                Console.WriteLine("\nWhy not another one:");
-                Console.WriteLine("[1]Why not");
-                Console.WriteLine("[0]Hell nah");
-                Console.Write("\nInput: ");
-
-                int input;
-                try
-                {
-                    input = Convert.ToInt32(Console.ReadLine());
-                }
-                catch
-                {
-                    input = -1;
-                }
-                switch (input)
-                {
-                    case 1:
-                        DifficultyWindow();
-                        break;
-                    case 0:
-                        MainWindow();
-                        break;
-                    case -1:
-                        Console.WriteLine("\nInvalid input, please try again...");
-                        Thread.Sleep(2000);
-                        Console.Clear();
-                        EndWindow(attemptsLeftCounter);
-                        break;
-                    default:
-                        Console.WriteLine("\nInvalid input, please try again...");
-                        Thread.Sleep(2000);
-                        Console.Clear();
-                        EndWindow(attemptsLeftCounter);
-                        break;
-                }
+                VictoryText();
             }
-            else //lose
+            else 
             {
-                Console.WriteLine("\nOopsie, you have run out of attempts :c");
-                Console.WriteLine("\nHow about another one:");
-                Console.WriteLine("[1]Why not");
-                Console.WriteLine("[0]Hell nah");
-
-                Console.Write("\nInput: ");
-
-                int input;
-                try
-                {
-                    input = Convert.ToInt32(Console.ReadLine());
-                }
-                catch
-                {
-                    input = -1;
-                }
-                switch (input)
-                {
-                    case 1:
-                        DifficultyWindow();
-                        break;
-                    case 0:
-                        MainWindow();
-                        break;
-                    case -1:
-                        Console.WriteLine("\nInvalid input, please try again...");
-                        Thread.Sleep(2000);
-                        Console.Clear();
-                        EndWindow(attemptsLeftCounter);
-                        break;
-                    default:
-                        Console.WriteLine("\nInvalid input, please try again...");
-                        Thread.Sleep(2000);
-                        Console.Clear();
-                        EndWindow(attemptsLeftCounter);
-                        break;
-                }
+                LoseText();
             }
+            EndingScene(attemptsLeftCounter);
         }
     }
-}

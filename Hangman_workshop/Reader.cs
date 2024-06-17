@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hangman_workshop
-{
+namespace Hangman_workshop;
     public class Reader
     {
         enum Level
@@ -66,4 +65,3 @@ namespace Hangman_workshop
             }
         }
     }
-}
