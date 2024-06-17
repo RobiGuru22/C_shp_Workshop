@@ -8,6 +8,27 @@ namespace Hangman_workshop
 {
     public class Reader
     {
+        enum Level
+        {
+            Easy,
+            Medium,
+            Hard
+        }
+        private static Level GetDifficulty(int difficultyNumber)
+        {
+            if (difficultyNumber == 1) 
+            {
+                return Level.Easy;
+            }
+            else if (difficultyNumber == 2) 
+            {
+                return Level.Medium;
+            }
+            else 
+            {
+                return Level.Hard; 
+            }
+        }
         private static string EasyDifficulty(List<string> words)
         {
             Random rnd = new Random();
@@ -29,18 +50,19 @@ namespace Hangman_workshop
         public static string GetWord(string path, int difficulty)
         {
             List<string> words = File.ReadAllLines(path).ToList();
-            
-            if(difficulty == 1)
+
+            Level enumDifficulty = GetDifficulty(difficulty);
+
+            switch(enumDifficulty)
             {
-                return EasyDifficulty(words);
-            }
-            else if (difficulty == 2)
-            {
-                return MediumDifficulty(words);
-            }
-            else
-            {
-                return HardDifficulty(words);
+                case Level.Easy:
+                    return EasyDifficulty(words);
+                case Level.Medium:
+                    return MediumDifficulty(words);
+                case Level.Hard:
+                    return HardDifficulty(words);
+                default:
+                    return null;
             }
         }
     }
