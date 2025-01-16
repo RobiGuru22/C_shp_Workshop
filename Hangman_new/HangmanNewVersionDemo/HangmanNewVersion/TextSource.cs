@@ -8,6 +8,9 @@ namespace HangmanNewVersion
 {
     public class TextSource
     {
-
+        public static List<string> GetEveryWord(string sourcePath)
+        {
+            return File.ReadAllLines(sourcePath).ToList();
+        }
     }
 }
