@@ -1,4 +1,9 @@
 ﻿
+using HangmanNewVersion;
+
 string sourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
 
-Console.WriteLine(sourcePath);
+foreach(var word in TextSource.GetEveryWord(sourcePath))
+{
+    Console.WriteLine(word);
+}
