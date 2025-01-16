@@ -1,2 +1,4 @@
 ﻿
-Console.WriteLine("Hello, World!");
+string sourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
+
+Console.WriteLine(sourcePath);
