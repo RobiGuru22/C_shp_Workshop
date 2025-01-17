@@ -3,7 +3,8 @@ using HangmanNewVersion;
 
 string sourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
 
-foreach(var word in TextSource.GetEveryWord(sourcePath))
+while(!GameBackEnd.GameOver)
 {
-    Console.WriteLine(word);
+    GameFrontEnd.MainWindow();
 }
+

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HangmanNewVersion
 {
-    public class ConsoleWindows
+    public class GameFrontEnd
     {
         public static void MainWindow()
         {
@@ -16,12 +16,20 @@ namespace HangmanNewVersion
             Console.WriteLine("[1] Play");
             Console.WriteLine("[0] Quit");
             Console.Write("Input: ");
+            GameBackEnd.MainWindowLogic();
         }
 
-        public static void IncorrectInputText()
+        public static void IncorrectInputText(ActiveWindowEnum activeWindowEnum)
         {
-            Console.WriteLine("Wrong input, please try again!");
+            Console.WriteLine("\nWrong input, please try again!");
             Console.Write("Input: ");
+            GameBackEnd.IncorrectInputTextLogic(activeWindowEnum);
+        }
+
+        public static void IncorrectGuessText()
+        {
+            Console.WriteLine("\nWrong guess format, please try again!");
+            Console.Write("Guess: ");
         }
 
         public static void DifficultyChooseWindow()
@@ -32,6 +40,8 @@ namespace HangmanNewVersion
             Console.WriteLine("[2] Medium (6 - 10 word)");
             Console.WriteLine("[3] Hard (10+ word)");
             Console.WriteLine("[0] Back to main menu");
+            Console.Write("Input: ");
+            GameBackEnd.DifficultyChooserWindowLogic();
         }
 
         public static void GameWindow(string guessableWord, int attemptsLeft, char[] displayCharacters, List<char> incorrectCharacters)
