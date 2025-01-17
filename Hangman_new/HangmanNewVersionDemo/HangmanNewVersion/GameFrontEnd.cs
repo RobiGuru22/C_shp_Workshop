@@ -34,16 +34,24 @@ namespace HangmanNewVersion
             Console.WriteLine("[0] Back to main menu");
         }
 
-        public static void GameWindow(string guessableWord, int attemptsLeft, char[] foundCharacters, List<char> incorrectCharacters)
+        public static void GameWindow(string guessableWord, int attemptsLeft, char[] displayCharacters, List<char> incorrectCharacters)
         {
             Console.Clear();
             Console.WriteLine("Guess the word\n");
-            Console.WriteLine(foundCharacters + "\n");
+            Console.WriteLine(displayCharacters + "\n");
             Console.Write("Wrong attempts: ");
-            foreach(var c in incorrectCharacters)
+            for(int i = 0; i < incorrectCharacters.Count; i++)
             {
-                Console.Write(c + " ");
+                if(i == incorrectCharacters.Count - 1)
+                {
+                    Console.Write(incorrectCharacters[i]);
+                }
+                else
+                {
+                    Console.Write(incorrectCharacters[i]+ ", ");
+                }
             }
+            Console.Write("\n\nGuess: ");
         }
     }
 }
