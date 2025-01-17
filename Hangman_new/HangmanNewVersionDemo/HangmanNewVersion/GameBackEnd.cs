@@ -104,6 +104,13 @@ namespace HangmanNewVersion
                     break;
             }
         }
+
+        public static void WrongInputTextClear()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 2);
+        }
         public static void IncorrectInputTextLogic(ActiveWindowEnum activeWindowEnum)
         {
             string? inputString = Console.ReadLine();
@@ -111,17 +118,24 @@ namespace HangmanNewVersion
             switch(activeWindowEnum)
             {
                 case ActiveWindowEnum.MAIN_WINDOW_ACTIVE:
-                    if (!int.TryParse(inputString, out inputNumber) || inputNumber != 0 || inputNumber != 1)
+                    if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
+                        WrongInputTextClear();
                         GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                     }
-                    MainWindowCorrectInput();
+                    else 
+                    {
+                        CurrentInput = inputNumber;
+                        MainWindowCorrectInput();
+                    }
                     break;
                 case ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE:
-                    if (!int.TryParse(inputString, out inputNumber) || inputNumber != 0 || inputNumber != 1)
+                    if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
+                        WrongInputTextClear();
                         GameFrontEnd.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
                     }
+                    CurrentInput = inputNumber;
                     DifficultyChooserWindowCorrectInput();
                     break;
             }
