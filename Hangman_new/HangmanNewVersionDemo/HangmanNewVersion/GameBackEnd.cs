@@ -12,7 +12,11 @@ namespace HangmanNewVersion
         public static int CurrentInput { get; set; }
         public static char CurrentGuess { get; set; }
         public static DifficultyEnum CurrentDifficulty { get; set; }
+
+        public static string? GuessableWord {  get; set; }
         public static int AttemptsLeft = 7;
+        public static List<char>? DisplayCharacters { get; set; }
+        public static List<char>? IncorrectlyGuessedCharacters { get; set; }
 
         public static void MainWindowLogic()
         {
@@ -34,6 +38,11 @@ namespace HangmanNewVersion
             }
 
             DifficultyChooserWindowCorrectInput();
+        }
+
+        public static void GameWindowLogic()
+        {
+            Console.ReadLine();
         }
         
         public static bool IsInputCorrect(List<int> acceptableInputs)
@@ -62,7 +71,7 @@ namespace HangmanNewVersion
             switch (CurrentInput)
             {
                 case 0:
-                    Environment.Exit(0);
+                    GameOver = true;
                     break;
                 case 1:
                     GameFrontEnd.DifficultyChooseWindow();
@@ -70,47 +79,43 @@ namespace HangmanNewVersion
             }
         }
 
+        public static void CreateGameWindow(DifficultyEnum? difficulty)
+        {
+            if (difficulty != null)
+            {
+                GuessableWord = TextSource.GetGueassableWord(difficulty);
+                DisplayCharacters = new List<char>();
+                IncorrectlyGuessedCharacters = new List<char>();
+                if (GuessableWord != null && DisplayCharacters != null && IncorrectlyGuessedCharacters != null)
+                {
+                    foreach (var word in GuessableWord)
+                    {
+                        DisplayCharacters.Add('_');
+                    }
+                    GameFrontEnd.GameWindow(GuessableWord, AttemptsLeft, DisplayCharacters, IncorrectlyGuessedCharacters);
+                }
+            }
+        }
+
         public static void DifficultyChooserWindowCorrectInput()
         {
-            DifficultyEnum? difficulty;
             switch (CurrentInput)
             {
                 case 0:
                     GameFrontEnd.MainWindow();
                     break;
                 case 1:
-                    difficulty = Difficulty.GetDifficultyEnumByNumber(1);
-                    if(difficulty != null)
-                    {
-                        //GameFrontEnd.GameWindow("asd", attemptsLeft, )
-                        Console.WriteLine("Diff: Easy");
-                    }
+                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(1));
                     break;
                 case 2:
-                    difficulty = Difficulty.GetDifficultyEnumByNumber(2);
-                    if (difficulty != null)
-                    {
-                        //GameFrontEnd.GameWindow("asd", attemptsLeft, )
-                        Console.WriteLine("Diff: Medium");
-                    }
+                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(2));
                     break;
                 case 3:
-                    difficulty = Difficulty.GetDifficultyEnumByNumber(3);
-                    if (difficulty != null)
-                    {
-                        //GameFrontEnd.GameWindow("asd", attemptsLeft, )
-                        Console.WriteLine("Diff: Hard");
-                    }
+                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(3));
                     break;
             }
         }
 
-        public static void WrongInputTextClear()
-        {
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop - 2);
-        }
         public static void IncorrectInputTextLogic(ActiveWindowEnum activeWindowEnum)
         {
             string? inputString = Console.ReadLine();
@@ -120,7 +125,7 @@ namespace HangmanNewVersion
                 case ActiveWindowEnum.MAIN_WINDOW_ACTIVE:
                     if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
-                        WrongInputTextClear();
+                        GameFrontEnd.WrongInputTextClear();
                         GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                     }
                     else 
@@ -132,11 +137,14 @@ namespace HangmanNewVersion
                 case ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE:
                     if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
-                        WrongInputTextClear();
+                        GameFrontEnd.WrongInputTextClear();
                         GameFrontEnd.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
                     }
-                    CurrentInput = inputNumber;
-                    DifficultyChooserWindowCorrectInput();
+                    else
+                    {
+                        CurrentInput = inputNumber;
+                        DifficultyChooserWindowCorrectInput();
+                    }
                     break;
             }
         }

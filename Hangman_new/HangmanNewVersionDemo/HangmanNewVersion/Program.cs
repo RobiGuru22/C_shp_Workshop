@@ -1,7 +1,7 @@
 ﻿
 using HangmanNewVersion;
 
-string sourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
+TextSource.SourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
 
 while(!GameBackEnd.GameOver)
 {
