@@ -8,6 +8,7 @@ namespace HangmanNewVersion
 {
     public class UserInputChecker
     {
+        
         public static bool IsInputCorrect(List<int> acceptableInputs)
         {
             string? inputString = Console.ReadLine();
@@ -22,20 +23,11 @@ namespace HangmanNewVersion
         public static bool IsGuessCorrect()
         {
             string? inputString = Console.ReadLine();
-            List<string> allowedMultipleCharacters = new List<string>
-            {
-                "cs",
-                "dz",
-                "dzs",
-                "gy",
-                "ly",
-                "sz",
-                "ty"
-            };
+            
             if (
                 int.TryParse(inputString, out int temp) ||
                 inputString == null ||
-                (!allowedMultipleCharacters.Any(x => x == inputString) && inputString.Length > 1)
+                (!GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputString) && inputString.Length > 1)
                 )
             {
                 return false;

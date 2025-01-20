@@ -60,7 +60,7 @@ namespace HangmanNewVersion
         {
             Console.Clear();
             Console.WriteLine("Guess the word\n");
-            Console.WriteLine(string.Join(" ", displayCharacters) + "\n");
+            Console.WriteLine(string.Join("", displayCharacters) + "\n");
             Console.WriteLine(guessableWord);
             Console.Write("Wrong attempts: ");
             for(int i = 0; i < incorrectCharacters.Count; i++)
