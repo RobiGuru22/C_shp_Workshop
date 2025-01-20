@@ -23,16 +23,15 @@ namespace HangmanNewVersion
         public static bool IsGuessCorrect()
         {
             string? inputString = Console.ReadLine();
-            
             if (
-                int.TryParse(inputString, out int temp) ||
                 inputString == null ||
-                (!GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputString) && inputString.Length > 1)
+                int.TryParse(inputString, out int temp) ||
+                (inputString.Length > 1 && !GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputString))
                 )
             {
                 return false;
             }
-            GameBackEnd.CurrentGuess = char.Parse(inputString);
+            GameBackEnd.CurrentGuess = inputString;
             return true;
         }
     }

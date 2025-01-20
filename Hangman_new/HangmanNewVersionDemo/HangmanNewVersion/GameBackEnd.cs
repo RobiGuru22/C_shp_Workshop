@@ -10,13 +10,16 @@ namespace HangmanNewVersion
     {
         public static bool GameOver = false;
         public static int CurrentInput { get; set; }
-        public static char CurrentGuess { get; set; }
+        public static string? CurrentGuess { get; set; }
         public static DifficultyEnum CurrentDifficulty { get; set; }
 
         public static string? GuessableWord {  get; set; }
         public static int AttemptsLeft = 7;
         public static List<char>? DisplayCharacters { get; set; }
-        public static List<char>? IncorrectlyGuessedCharacters { get; set; }
+        public static List<char>? ActualCharacters { get; set; }
+        public static List<string>? IncorrectlyGuessedCharacters { get; set; }
+
+        public static List<string> CurrentAllowedMultipleCharacterWordInGueassableWords = new List<string>();
 
         public static void MainWindowLogic()
         {
@@ -48,13 +51,7 @@ namespace HangmanNewVersion
             }
             else
             {
-                if(GuessableWord != null)
-                {
-                    for (int i = 0; i < GuessableWord.Length; i++)
-                    {
-
-                    }
-                }
+                GameBackendHelper.ImplementGuess();
             }
         }
 
@@ -88,6 +85,26 @@ namespace HangmanNewVersion
                         GameBackendHelper.DifficultyChooserWindowCorrectInput();
                     }
                     break;
+            }
+        }
+
+        public static void IncorrectGuessTextLogic()
+        {
+            string? inputGuess = Console.ReadLine();
+
+            if(
+                (inputGuess != null && GuessableWord != null) &&
+                (int.TryParse(inputGuess, out int temp) || !GuessableWord.Contains(inputGuess))
+            )
+            {
+                GameFrontEnd.IncorrectGuessFormatText();
+                GameFrontEnd.WrongGuessTextClear();
+            }
+            else
+            {
+                CurrentGuess = inputGuess;
+                GameBackendHelper.ImplementGuess();
+                GameFrontEnd.GameWindow(GuessableWord, AttemptsLeft, DisplayCharacters, IncorrectlyGuessedCharacters);
             }
         }
     }
