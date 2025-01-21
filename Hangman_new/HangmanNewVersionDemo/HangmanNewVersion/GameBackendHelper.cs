@@ -35,7 +35,7 @@ namespace HangmanNewVersion
         {
             foreach (var w in AllowedMultipleCharacters)
             {
-                if(guessableWord.Contains(w))
+                if (guessableWord.Contains(w))
                 {
                     return true;
                 }
@@ -43,8 +43,9 @@ namespace HangmanNewVersion
             return false;
         }
 
-        public static List<string> GetAllowedMultipleCharactersFromGuessableWord(string guessableWord)
+        public static List<string> GetAllowedMultipleCharactersFromGuessableWord()
         {
+            string guessableWord = GameBackEnd.GuessableWord;
             List<string> allowedMultipleCharactersInWord = new List<string>();
             bool dzsFound = false;
             foreach (var w in AllowedMultipleCharacters)
@@ -53,7 +54,7 @@ namespace HangmanNewVersion
                 {
                     allowedMultipleCharactersInWord.Add(w);
                 }
-                else if (w == "dz")
+                else if (guessableWord.Contains("dz"))
                 {
                     for (int i = 0; i < guessableWord.Length; i++)
                     {
@@ -64,7 +65,7 @@ namespace HangmanNewVersion
                             break;
                         }
                     }
-                    if(!dzsFound)
+                    if (!dzsFound)
                     {
                         allowedMultipleCharactersInWord.Add("dz");
                     }
@@ -114,189 +115,96 @@ namespace HangmanNewVersion
                 GameBackEnd.ActualCharacters = new List<char>();
                 GameBackEnd.DisplayCharacters = new List<char>();
                 GameBackEnd.IncorrectlyGuessedCharacters = new List<string>();
-                if (
-                    GameBackEnd.GuessableWord != null &&
-                    GameBackEnd.DisplayCharacters != null &&
-                    GameBackEnd.IncorrectlyGuessedCharacters != null
-                    )
+                if (GameBackEnd.GuessableWord != null && GameBackEnd.DisplayCharacters != null && GameBackEnd.IncorrectlyGuessedCharacters != null)
                 {
-                    /*if(AllowedMultipleCharactersDetected(GameBackEnd.GuessableWord))
+                    foreach (var c in GameBackEnd.GuessableWord)
                     {
-                        GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords = GetAllowedMultipleCharactersFromGuessableWord(GameBackEnd.GuessableWord);
-                        int indexSkip = 0;
-                        bool multipleCharactersDetectedAtIndex = false;
-                        for(int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
-                        {
-                            if (AllowedSpecialCharacters.Any(x => x == GameBackEnd.GuessableWord[i]))
-                            {
-                                GameBackEnd.DisplayCharacters[i] = GameBackEnd.GuessableWord[i];
-                                if(i + 1 != GameBackEnd.GuessableWord.Length)
-                                {
-                                    GameBackEnd.DisplayCharacters.Add(' ');
-                                }
-                            }
-                            else
-                            {
-                                for (int j = 0; j < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
-                                {
-                                    if ((i + GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length) < GameBackEnd.GuessableWord.Length)
-                                    {
-                                        for (int k = 0; k < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
-                                        {
-
-                                            if (GameBackEnd.GuessableWord[i + k] == GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
-                                            {
-                                                multipleCharactersDetectedAtIndex = true;
-                                            }
-                                            else
-                                            {
-                                                multipleCharactersDetectedAtIndex = false;
-                                            }
-                                        }
-                                    }
-                                    if (multipleCharactersDetectedAtIndex)
-                                    {
-                                        indexSkip = GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
-                                        break;
-                                    }
-                                }
-                                if (indexSkip > 0)
-                                {
-                                    int temp = 0;
-                                    while(temp < indexSkip)
-                                    {
-                                        GameBackEnd.DisplayCharacters.Add('_');
-                                        temp++;
-                                    }
-                                    if (i + 1 != GameBackEnd.GuessableWord.Length)
-                                    {
-                                        GameBackEnd.DisplayCharacters.Add(' ');
-                                    }
-                                    i += indexSkip - 1;
-                                }
-                                else
-                                {
-                                    GameBackEnd.DisplayCharacters.Add('_');
-                                    if (i + 1 != GameBackEnd.GuessableWord.Length)
-                                    {
-                                        GameBackEnd.DisplayCharacters.Add(' ');
-                                    }
-                                }
-                                multipleCharactersDetectedAtIndex = false;
-                                indexSkip = 0;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
-                        {
-                            if (AllowedSpecialCharacters.Any(x => x == GameBackEnd.GuessableWord[i]))
-                            {
-                                GameBackEnd.DisplayCharacters.Add(GameBackEnd.GuessableWord[i]);
-                            }
-                            else
-                            {
-                                GameBackEnd.DisplayCharacters.Add('_');
-                            }
-                            if (i + 1 != GameBackEnd.GuessableWord.Length)
-                            {
-                                GameBackEnd.DisplayCharacters.Add(' ');
-                            }
-                        }
-                    }
-                    foreach(var c in GameBackEnd.DisplayCharacters)
-                    {
-                        if(c != ' ')
+                        if (AllowedSpecialCharacters.Any(x => x == c))
                         {
                             GameBackEnd.ActualCharacters.Add(c);
                         }
-                    }*/
+                        else
+                        {
+                            GameBackEnd.ActualCharacters.Add('_');
+                        }
 
-                    foreach(var c in GameBackEnd.GuessableWord)
-                    {
-                        GameBackEnd.ActualCharacters.Add('_');
                     }
 
-                    ActualListToDisplayListConersion(GameBackEnd.ActualCharacters);
+                    GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords = GetAllowedMultipleCharactersFromGuessableWord();
+
+                    ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
 
                     GameFrontEnd.GameWindow(
-                        GameBackEnd.GuessableWord, 
-                        GameBackEnd.AttemptsLeft, 
-                        GameBackEnd.DisplayCharacters, 
+                        GameBackEnd.GuessableWord,
+                        GameBackEnd.AttemptsLeft,
+                        GameBackEnd.DisplayCharacters,
                         GameBackEnd.IncorrectlyGuessedCharacters
                         );
                 }
             }
         }
 
-        public static void ActualListToDisplayListConersion(List<char> actualList)
+        public static void ActualListToDisplayListConversion(List<char> actualList)
         {
             List<char> newDipslayList = new List<char>();
-            if(AllowedMultipleCharactersDetected(GameBackEnd.GuessableWord))
+            if (AllowedMultipleCharactersDetected(GameBackEnd.GuessableWord))
             {
                 int indexSkip = 0;
                 bool multipleCharactersDetectedAtIndex = false;
+
                 for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
                 {
-                    if (AllowedSpecialCharacters.Any(x => x == GameBackEnd.GuessableWord[i]))
+                    for (int j = 0; j < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
                     {
-                        GameBackEnd.DisplayCharacters[i] = actualList[i];
+                        if ((i + GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length) < GameBackEnd.GuessableWord.Length)
+                        {
+                            for (int k = 0; k < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
+                            {
+                                //
+                                if (
+                                    ((i + k) < GameBackEnd.GuessableWord.Length) &&
+                                    (GameBackEnd.GuessableWord[i + k] == GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
+                                    )
+                                {
+                                    multipleCharactersDetectedAtIndex = true;
+                                }
+                                else
+                                {
+                                    multipleCharactersDetectedAtIndex = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (multipleCharactersDetectedAtIndex)
+                        {
+                            indexSkip = GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
+                            break;
+                        }
+                    }
+                    if (indexSkip > 0)
+                    {
+                        int temp = 0;
+                        while (temp < indexSkip)
+                        {
+                            newDipslayList.Add(actualList[i + temp]);
+                            temp++;
+                        }
+                        if (i + 1 != actualList.Count)
+                        {
+                            newDipslayList.Add(' ');
+                        }
+                        i += indexSkip - 1;
+                    }
+                    else
+                    {
+                        newDipslayList.Add(actualList[i]);
                         if (i + 1 != actualList.Count)
                         {
                             newDipslayList.Add(' ');
                         }
                     }
-                    else
-                    {
-                        for (int j = 0; j < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
-                        {
-                            if ((i + GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length) < GameBackEnd.GuessableWord.Length)
-                            {
-                                for (int k = 0; k < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
-                                {
-
-                                    if (GameBackEnd.GuessableWord[i + k] == GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
-                                    {
-                                        multipleCharactersDetectedAtIndex = true;
-                                    }
-                                    else
-                                    {
-                                        multipleCharactersDetectedAtIndex = false;
-                                    }
-                                }
-                            }
-                            if (multipleCharactersDetectedAtIndex)
-                            {
-                                indexSkip = GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
-                                break;
-                            }
-                        }
-                        if (indexSkip > 0)
-                        {
-                            int temp = 0;
-                            while (temp < indexSkip)
-                            {
-                                newDipslayList[i + temp] = actualList[i + temp];
-                                temp++;
-                            }
-                            if (i + 1 != actualList.Count)
-                            {
-                                newDipslayList.Add(' ');
-                            }
-                            i += indexSkip - 1;
-                        }
-                        else
-                        {
-                            newDipslayList[i] = actualList[i];
-                            if (i + 1 != actualList.Count)
-                            {
-                                newDipslayList.Add(' ');
-                            }
-                        }
-                        multipleCharactersDetectedAtIndex = false;
-                        indexSkip = 0;
-                    }
+                    multipleCharactersDetectedAtIndex = false;
+                    indexSkip = 0;
                 }
             }
             else
@@ -304,7 +212,7 @@ namespace HangmanNewVersion
                 for (int i = 0; i < actualList.Count; i++)
                 {
                     newDipslayList.Add(actualList[i]);
-                    if(i + 1 != actualList.Count)
+                    if (i + 1 != actualList.Count)
                     {
                         newDipslayList.Add(' ');
                     }
@@ -315,87 +223,140 @@ namespace HangmanNewVersion
 
         public static void ImplementGuess()
         {
-            if (GameBackEnd.GuessableWord != null)
+            if (GameBackEnd.CurrentGuess.Length == 1)
             {
-                if (GameBackEnd.GuessableWord.Contains(GameBackEnd.CurrentGuess))
+                bool guessCharIsInMultiWord = false;
+                bool singleCharSuccessfullyAddedToActualList = false;
+                foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
                 {
-                    int indexSkip = 0;
-                    bool multipleCharactersDetectedAtIndex = false;
+                    if (c.Contains(GameBackEnd.CurrentGuess))
+                    {
+                        guessCharIsInMultiWord = true;
+                        break;
+                    }
+                }
+                if (guessCharIsInMultiWord)
+                {
                     for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
                     {
-                        for (int j = 0; j < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
+                        bool cicleIsInMultiWord = false;
+                        foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
                         {
-                            if (i + GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length < GameBackEnd.GuessableWord.Length)
+                            int indexSkip = 0;
+                            for(int j = 0; j < c.Length; j++)
                             {
-                                for (int k = 0; k < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
+                                if (((i + j) < GameBackEnd.GuessableWord.Length) && GameBackEnd.GuessableWord[i + j] == c[j])
                                 {
-                                    if (GameBackEnd.GuessableWord[i + k] == GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
-                                    {
-                                        multipleCharactersDetectedAtIndex = true;
-                                    }
-                                    else
-                                    {
-                                        multipleCharactersDetectedAtIndex = false;
-                                    }
+                                    cicleIsInMultiWord = true;
+                                    indexSkip++;
                                 }
-                                if (multipleCharactersDetectedAtIndex)
+                                else
                                 {
-                                    indexSkip = GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
+                                    cicleIsInMultiWord = false;
                                     break;
                                 }
                             }
-                        }
-                        if (indexSkip > 0)
-                        {
-                            for (int j = 0; j < GameBackEnd.DisplayCharacters.Count; j++)
+                            if(cicleIsInMultiWord)
                             {
-                                int temp = 0;
-                                bool rightPlaceInDipslacCharacters = false;
-                                while (temp < indexSkip)
-                                {
-                                    if (GameBackEnd.DisplayCharacters[j + temp] != ' ')
-                                    {
-                                        rightPlaceInDipslacCharacters = true;
-                                    }
-                                    else
-                                    {
-                                        rightPlaceInDipslacCharacters = false;
-                                    }
-                                    temp++;
-                                }
-                                temp = 0;
-                                if (rightPlaceInDipslacCharacters)
-                                {
-                                    while (temp < indexSkip)
-                                    {
-                                        GameBackEnd.DisplayCharacters[j + temp] = GameBackEnd.GuessableWord[i + temp];
-                                        temp++;
-                                    }
-                                }
+                                i += indexSkip - 1;
+                                break;
                             }
-                            i += indexSkip - 1;
                         }
-                        else
+                        if(!cicleIsInMultiWord && GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
                         {
-                            for(int j = 0; j < GameBackEnd.DisplayCharacters.Count; j++)
-                            {
-                                if(j == 0 && GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
-                                {
-                                    GameBackEnd.DisplayCharacters[j] = char.Parse(GameBackEnd.CurrentGuess);
-                                } 
-                                else if (GameBackEnd.DisplayCharacters[j] != ' ' && j != 0 && GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
-                                {
-
-                                }
-                            }
+                            GameBackEnd.ActualCharacters[i] = char.Parse(GameBackEnd.CurrentGuess);
+                            singleCharSuccessfullyAddedToActualList = true;
                         }
                     }
                 }
                 else
                 {
+                    for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                    {
+                        if (GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
+                        {
+                            GameBackEnd.ActualCharacters[i] = char.Parse(GameBackEnd.CurrentGuess);
+                            singleCharSuccessfullyAddedToActualList = true;
+                        }
+                    }
+                }
+                if(!singleCharSuccessfullyAddedToActualList && !GameBackEnd.IncorrectlyGuessedCharacters.Contains(GameBackEnd.CurrentGuess))
+                {
                     GameBackEnd.IncorrectlyGuessedCharacters.Add(GameBackEnd.CurrentGuess);
+                    GameBackEnd.AttemptsLeft--;
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                {
+                    bool cicleIsInMultiWord = false;
+                    bool multiWordIsGuessedWord = false;
+                    foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
+                    {
+                        int indexSkip = 0;
+                        for (int j = 0; j < c.Length; j++)
+                        {
+                            if (((i+j) < GameBackEnd.GuessableWord.Length) && GameBackEnd.GuessableWord[i + j] == c[j])
+                            {
+                                cicleIsInMultiWord = true;
+                                indexSkip++;
+                                if(!(GameBackEnd.CurrentGuess.Length < c.Length) && GameBackEnd.CurrentGuess[j] == c[j])
+                                {
+                                    multiWordIsGuessedWord = true;
+                                }
+                                else
+                                {
+                                    multiWordIsGuessedWord = false;
+                                }
+                            }
+                            else
+                            {
+                                cicleIsInMultiWord = false;
+                                multiWordIsGuessedWord = false;
+                            }
+                        }
+                        if (cicleIsInMultiWord)
+                        {
+                            if(multiWordIsGuessedWord)
+                            {
+                                for(int j = 0; j < c.Length; j++)
+                                {
+                                    GameBackEnd.ActualCharacters[i + j] = c[j];
+                                }
+                            }
+                            i += indexSkip - 1;
+                            break;
+                        }
+                    }
                 }
             }
+
+            ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
+            GameFrontEnd.GameWindow(GameBackEnd.GuessableWord, GameBackEnd.AttemptsLeft, GameBackEnd.DisplayCharacters, GameBackEnd.IncorrectlyGuessedCharacters);
+        }
+
+        public static void IncorrectGuessLogic()
+        {
+            if (!GameBackEnd.IncorrectlyGuessedCharacters.Contains(GameBackEnd.CurrentGuess))
+            {
+                GameBackEnd.IncorrectlyGuessedCharacters.Add(GameBackEnd.CurrentGuess);
+                GameBackEnd.AttemptsLeft--;
+            }
+            GameFrontEnd.GameWindow(GameBackEnd.GuessableWord, GameBackEnd.AttemptsLeft, GameBackEnd.DisplayCharacters, GameBackEnd.IncorrectlyGuessedCharacters);
+
+        }
+        
+        public static bool GameOverCheck()
+        {
+            if (GameBackEnd.AttemptsLeft == 0 || !GameBackEnd.ActualCharacters.Contains('_'))
+            {
+                GameBackEnd.GameOver = true;
+                return true;
+            }
+            return false;
+                
         }
     }
 }

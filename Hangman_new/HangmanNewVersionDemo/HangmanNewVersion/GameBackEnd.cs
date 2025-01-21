@@ -45,13 +45,20 @@ namespace HangmanNewVersion
 
         public static void GameWindowLogic()
         {
-            if(!UserInputChecker.IsGuessCorrect())
+            if(!GameBackendHelper.GameOverCheck())
             {
-                GameFrontEnd.IncorrectGuessText();
-            }
-            else
-            {
-                GameBackendHelper.ImplementGuess();
+                if (!UserInputChecker.IsGuessFormatCorrect())
+                {
+                    GameFrontEnd.IncorrectGuessFormatText();
+                }
+                else if (!UserInputChecker.IsGuessCorrect())
+                {
+                    GameBackendHelper.IncorrectGuessLogic();
+                }
+                else
+                {
+                    GameBackendHelper.ImplementGuess();
+                }
             }
         }
 
@@ -88,17 +95,19 @@ namespace HangmanNewVersion
             }
         }
 
-        public static void IncorrectGuessTextLogic()
+        public static void IncorrectGuessFormatTextLogic()
         {
             string? inputGuess = Console.ReadLine();
 
-            if(
-                (inputGuess != null && GuessableWord != null) &&
-                (int.TryParse(inputGuess, out int temp) || !GuessableWord.Contains(inputGuess))
+            if (
+                inputGuess == null || 
+                GuessableWord == null ||
+                int.TryParse(inputGuess, out int temp) || 
+                (inputGuess.Length > 1 && !GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputGuess))
             )
             {
+                GameFrontEnd.WrongGuessFormatTextClear();
                 GameFrontEnd.IncorrectGuessFormatText();
-                GameFrontEnd.WrongGuessTextClear();
             }
             else
             {
@@ -107,5 +116,7 @@ namespace HangmanNewVersion
                 GameFrontEnd.GameWindow(GuessableWord, AttemptsLeft, DisplayCharacters, IncorrectlyGuessedCharacters);
             }
         }
+
+        
     }
 }

@@ -36,18 +36,14 @@ namespace HangmanNewVersion
         {
             Console.WriteLine("\nWrong guess format, please try again!");
             Console.Write("Guess: ");
+            GameBackEnd.IncorrectGuessFormatTextLogic();
         }
 
-        public static void IncorrectGuessText()
-        {
-            Console.WriteLine("\nThis word is not in the gueassable word, please try again!");
-            Console.Write("Guess: ");
-        }
-        public static void WrongGuessTextClear()
+        public static void WrongGuessFormatTextClear()
         {
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.SetCursorPosition(0, Console.CursorTop - 2);
         }
 
         public static void DifficultyChooseWindow()
@@ -66,8 +62,9 @@ namespace HangmanNewVersion
         {
             Console.Clear();
             Console.WriteLine("Guess the word\n");
-            Console.WriteLine(displayCharacters + "\n");
+            Console.WriteLine(string.Join("", displayCharacters) + "\n");
             Console.WriteLine(guessableWord);
+            Console.WriteLine($"Attempts left: {GameBackEnd.AttemptsLeft}");
             Console.Write("Wrong attempts: ");
             for(int i = 0; i < incorrectCharacters.Count; i++)
             {

@@ -20,7 +20,7 @@ namespace HangmanNewVersion
             return true;
         }
 
-        public static bool IsGuessCorrect()
+        public static bool IsGuessFormatCorrect()
         {
             string? inputString = Console.ReadLine();
             if (
@@ -32,6 +32,15 @@ namespace HangmanNewVersion
                 return false;
             }
             GameBackEnd.CurrentGuess = inputString;
+            return true;
+        }
+
+        public static bool IsGuessCorrect()
+        {
+            if (!GameBackEnd.GuessableWord.Contains(GameBackEnd.CurrentGuess))
+            {
+                return false;
+            }
             return true;
         }
     }
