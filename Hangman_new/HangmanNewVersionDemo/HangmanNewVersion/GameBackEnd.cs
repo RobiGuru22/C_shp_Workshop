@@ -45,7 +45,7 @@ namespace HangmanNewVersion
 
         public static void GameWindowLogic()
         {
-            if(!GameBackendHelper.GameOverCheck())
+            if(GameBackendHelper.GameOverCheck() > 0)
             {
                 if (!UserInputChecker.IsGuessFormatCorrect())
                 {
@@ -59,6 +59,11 @@ namespace HangmanNewVersion
                 {
                     GameBackendHelper.ImplementGuess();
                 }
+            }
+            else
+            {
+                GameFrontEnd.GameOverWindow(GameOverWindow.GetEnumByInt(GameBackendHelper.GameOverCheck()));
+                GameOver = true;
             }
         }
 
@@ -113,10 +118,8 @@ namespace HangmanNewVersion
             {
                 CurrentGuess = inputGuess;
                 GameBackendHelper.ImplementGuess();
-                GameFrontEnd.GameWindow(GuessableWord, AttemptsLeft, DisplayCharacters, IncorrectlyGuessedCharacters);
+                GameFrontEnd.GameWindow();
             }
         }
-
-        
     }
 }

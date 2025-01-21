@@ -134,12 +134,7 @@ namespace HangmanNewVersion
 
                     ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
 
-                    GameFrontEnd.GameWindow(
-                        GameBackEnd.GuessableWord,
-                        GameBackEnd.AttemptsLeft,
-                        GameBackEnd.DisplayCharacters,
-                        GameBackEnd.IncorrectlyGuessedCharacters
-                        );
+                    GameFrontEnd.GameWindow();
                 }
             }
         }
@@ -334,7 +329,7 @@ namespace HangmanNewVersion
             }
 
             ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
-            GameFrontEnd.GameWindow(GameBackEnd.GuessableWord, GameBackEnd.AttemptsLeft, GameBackEnd.DisplayCharacters, GameBackEnd.IncorrectlyGuessedCharacters);
+            GameFrontEnd.GameWindow();
         }
 
         public static void IncorrectGuessLogic()
@@ -344,18 +339,21 @@ namespace HangmanNewVersion
                 GameBackEnd.IncorrectlyGuessedCharacters.Add(GameBackEnd.CurrentGuess);
                 GameBackEnd.AttemptsLeft--;
             }
-            GameFrontEnd.GameWindow(GameBackEnd.GuessableWord, GameBackEnd.AttemptsLeft, GameBackEnd.DisplayCharacters, GameBackEnd.IncorrectlyGuessedCharacters);
+            GameFrontEnd.GameWindow();
 
         }
         
-        public static bool GameOverCheck()
+        public static int GameOverCheck()
         {
-            if (GameBackEnd.AttemptsLeft == 0 || !GameBackEnd.ActualCharacters.Contains('_'))
+            if (!GameBackEnd.ActualCharacters.Contains('_'))
             {
-                GameBackEnd.GameOver = true;
-                return true;
+                return 0;
             }
-            return false;
+            else if (GameBackEnd.AttemptsLeft == 0)
+            {
+                return -1;
+            }
+            return 1;
                 
         }
     }

@@ -25,6 +25,7 @@ namespace HangmanNewVersion
             Console.Write("Input: ");
             GameBackEnd.IncorrectInputTextLogic(activeWindowEnum);
         }
+
         public static void WrongInputTextClear()
         {
             Console.SetCursorPosition(0, Console.CursorTop - 1);
@@ -58,27 +59,42 @@ namespace HangmanNewVersion
             GameBackEnd.DifficultyChooserWindowLogic();
         }
 
-        public static void GameWindow(string guessableWord, int attemptsLeft, List<char> displayCharacters, List<string> incorrectCharacters)
+        public static void GameWindow()
         {
             Console.Clear();
             Console.WriteLine("Guess the word\n");
-            Console.WriteLine(string.Join("", displayCharacters) + "\n");
-            Console.WriteLine(guessableWord);
+            Console.WriteLine(string.Join("", GameBackEnd.DisplayCharacters) + "\n");
+            //Console.WriteLine(GameBackEnd.GuessableWord);
             Console.WriteLine($"Attempts left: {GameBackEnd.AttemptsLeft}");
             Console.Write("Wrong attempts: ");
-            for(int i = 0; i < incorrectCharacters.Count; i++)
+            for(int i = 0; i < GameBackEnd.IncorrectlyGuessedCharacters.Count; i++)
             {
-                if(i == incorrectCharacters.Count - 1)
+                if(i == GameBackEnd.IncorrectlyGuessedCharacters.Count - 1)
                 {
-                    Console.Write(incorrectCharacters[i]);
+                    Console.Write(GameBackEnd.IncorrectlyGuessedCharacters[i]);
                 }
                 else
                 {
-                    Console.Write(incorrectCharacters[i]+ ", ");
+                    Console.Write(GameBackEnd.IncorrectlyGuessedCharacters[i]+ ", ");
                 }
             }
             Console.Write("\n\nGuess: ");
             GameBackEnd.GameWindowLogic();
+        }
+
+        public static void GameOverWindow(GameOverEnum gameOverWindow)
+        {
+            switch(gameOverWindow)
+            {
+                case GameOverEnum.WIN:
+                    Console.WriteLine("\n\nYou've found the word!");
+                    Console.WriteLine($"\nNumber of guesses used to find the word: {GameBackEnd.IncorrectlyGuessedCharacters.Count}\n");
+                    break;
+                case GameOverEnum.LOSE:
+                    Console.WriteLine("\n\nYou've been hanged :(");
+                    Console.WriteLine($"\nThe word you had to guess: {GameBackEnd.GuessableWord}\n");
+                    break;
+            }
         }
     }
 }
