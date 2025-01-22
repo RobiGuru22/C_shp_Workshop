@@ -67,17 +67,18 @@ namespace HangmanNewVersion
             //Console.WriteLine(GameBackEnd.GuessableWord);
             Console.WriteLine($"Attempts left: {GameBackEnd.AttemptsLeft}");
             Console.Write("Wrong attempts: ");
-            for(int i = 0; i < GameBackEnd.IncorrectlyGuessedCharacters.Count; i++)
+            for (int i = 0; i < GameBackEnd.IncorrectlyGuessedCharacters.Count; i++)
             {
-                if(i == GameBackEnd.IncorrectlyGuessedCharacters.Count - 1)
+                if (i == GameBackEnd.IncorrectlyGuessedCharacters.Count - 1)
                 {
                     Console.Write(GameBackEnd.IncorrectlyGuessedCharacters[i]);
                 }
                 else
                 {
-                    Console.Write(GameBackEnd.IncorrectlyGuessedCharacters[i]+ ", ");
+                    Console.Write(GameBackEnd.IncorrectlyGuessedCharacters[i] + ", ");
                 }
             }
+            Console.WriteLine(GameBackendHelper.GetCurrentHangmanDrawingByAttemptsLeft());
             Console.Write("\n\nGuess: ");
             GameBackEnd.GameWindowLogic();
         }

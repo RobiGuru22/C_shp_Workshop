@@ -21,6 +21,18 @@ namespace HangmanNewVersion
 
         public static List<string> CurrentAllowedMultipleCharacterWordInGueassableWords = new List<string>();
 
+        public static string[] hangmanPics =
+        {
+            "\n  +---+\n      |\n      |\n      |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========",
+            "\n  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n========="
+        };
+
         public static void MainWindowLogic()
         {
             List<int> correctInputs = new List<int> { 0, 1 };

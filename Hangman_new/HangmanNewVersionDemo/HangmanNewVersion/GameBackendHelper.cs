@@ -356,5 +356,29 @@ namespace HangmanNewVersion
             return 1;
                 
         }
+        public static string? GetCurrentHangmanDrawingByAttemptsLeft()
+        {
+            switch(GameBackEnd.AttemptsLeft)
+            {
+                case 7:
+                    return GameBackEnd.hangmanPics[0];
+                case 6:
+                    return GameBackEnd.hangmanPics[1];
+                case 5:
+                    return GameBackEnd.hangmanPics[2];
+                case 4:
+                    return GameBackEnd.hangmanPics[3];
+                case 3:
+                    return GameBackEnd.hangmanPics[4];
+                case 2:
+                    return GameBackEnd.hangmanPics[5];
+                case 1:
+                    return GameBackEnd.hangmanPics[6];
+                case 0:
+                    return GameBackEnd.hangmanPics[7];
+                default:
+                    return null;
+            }
+        }
     }
 }
