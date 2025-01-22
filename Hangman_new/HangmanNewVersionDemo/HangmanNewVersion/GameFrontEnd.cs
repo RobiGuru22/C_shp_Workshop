@@ -85,7 +85,7 @@ namespace HangmanNewVersion
 
         public static void GameOverWindow(GameOverEnum gameOverWindow)
         {
-            switch(gameOverWindow)
+            switch (gameOverWindow)
             {
                 case GameOverEnum.WIN:
                     Console.WriteLine("\n\nYou've found the word!");

@@ -13,7 +13,7 @@ namespace HangmanNewVersion
         public static string? CurrentGuess { get; set; }
         public static DifficultyEnum CurrentDifficulty { get; set; }
 
-        public static string? GuessableWord {  get; set; }
+        public static string? GuessableWord { get; set; }
         public static int AttemptsLeft = 7;
         public static List<char>? DisplayCharacters { get; set; }
         public static List<char>? ActualCharacters { get; set; }
@@ -36,7 +36,7 @@ namespace HangmanNewVersion
         public static void MainWindowLogic()
         {
             List<int> correctInputs = new List<int> { 0, 1 };
-            if(!UserInputChecker.IsInputCorrect(correctInputs)) 
+            if (!UserInputChecker.IsInputCorrect(correctInputs))
             {
                 GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
             }
@@ -57,7 +57,7 @@ namespace HangmanNewVersion
 
         public static void GameWindowLogic()
         {
-            if(GameBackendHelper.GameOverCheck() > 0)
+            if (GameBackendHelper.GameOverCheck() > 0)
             {
                 if (!UserInputChecker.IsGuessFormatCorrect())
                 {
@@ -83,7 +83,7 @@ namespace HangmanNewVersion
         {
             string? inputString = Console.ReadLine();
             int inputNumber;
-            switch(activeWindowEnum)
+            switch (activeWindowEnum)
             {
                 case ActiveWindowEnum.MAIN_WINDOW_ACTIVE:
                     if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
@@ -91,7 +91,7 @@ namespace HangmanNewVersion
                         GameFrontEnd.WrongInputTextClear();
                         GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                     }
-                    else 
+                    else
                     {
                         CurrentInput = inputNumber;
                         GameBackendHelper.MainWindowCorrectInput();
@@ -117,9 +117,9 @@ namespace HangmanNewVersion
             string? inputGuess = Console.ReadLine();
 
             if (
-                inputGuess == null || 
+                inputGuess == null ||
                 GuessableWord == null ||
-                int.TryParse(inputGuess, out int temp) || 
+                int.TryParse(inputGuess, out int temp) ||
                 (inputGuess.Length > 1 && !GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputGuess))
             )
             {
