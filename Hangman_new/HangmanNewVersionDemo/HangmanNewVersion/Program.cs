@@ -1,10 +1,10 @@
-﻿
-using HangmanNewVersion;
+﻿using HangmanBackendLibrary;
+using HangmanFrontendLibrary;
 
 TextSource.SourcePath = Directory.GetCurrentDirectory() + "\\words.txt";
 
-while(!GameBackEnd.GameOver)
+while(!MainBackendLogic.GameOver)
 {
-    GameFrontEnd.MainWindow();
+    MainFrontendLogic.MainWindow();
 }
 

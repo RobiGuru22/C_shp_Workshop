@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
-    public class Difficulty
+    public class DifficultyState
     {
         public static DifficultyEnum? GetDifficultyEnumByNumber(int difficultyNumber)
         {
-            switch(difficultyNumber)
+            switch (difficultyNumber)
             {
                 case 1:
                     return DifficultyEnum.EASY;

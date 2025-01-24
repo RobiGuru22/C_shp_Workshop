@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
-    public class GameOverWindow
+    public class GameOverWindowState
     {
         public static GameOverEnum GetEnumByInt(int gameOverInt)
         {
-            switch(gameOverInt)
+            switch (gameOverInt)
             {
                 case 0:
                     return GameOverEnum.WIN;

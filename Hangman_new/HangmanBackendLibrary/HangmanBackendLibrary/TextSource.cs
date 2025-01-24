@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
     public class TextSource
     {
-        public static string SourcePath {  get; set; }
+        public static string SourcePath { get; set; }
         public static List<string> GetEveryWord()
         {
             return File.ReadAllLines(SourcePath).ToList();
@@ -19,12 +19,12 @@ namespace HangmanNewVersion
             Random rnd = new Random();
             List<string> everyWord = GetEveryWord();
             List<string> possibleWords = new List<string>();
-            switch(difficulty)
+            switch (difficulty)
             {
                 case DifficultyEnum.EASY:
-                    foreach(var word in everyWord)
+                    foreach (var word in everyWord)
                     {
-                        if(word.Length > 0 && word.Length <= 5)
+                        if (word.Length > 0 && word.Length <= 5)
                         {
                             possibleWords.Add(word);
                         }

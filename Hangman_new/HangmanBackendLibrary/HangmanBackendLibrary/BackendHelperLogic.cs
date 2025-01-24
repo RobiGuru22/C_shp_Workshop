@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HangmanFrontendLibrary;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
-    public class GameBackendHelper
+    public class BackendHelperLogic
     {
         public static List<char> AllowedSpecialCharacters = new List<char>
                 {
@@ -45,7 +46,7 @@ namespace HangmanNewVersion
 
         public static List<string> GetAllowedMultipleCharactersFromGuessableWord()
         {
-            string guessableWord = GameBackEnd.GuessableWord;
+            string guessableWord = MainBackendLogic.GuessableWord;
             List<string> allowedMultipleCharactersInWord = new List<string>();
             bool dzsFound = false;
             foreach (var w in AllowedMultipleCharacters)
@@ -77,32 +78,32 @@ namespace HangmanNewVersion
 
         public static void MainWindowCorrectInput()
         {
-            switch (GameBackEnd.CurrentInput)
+            switch (MainBackendLogic.CurrentInput)
             {
                 case 0:
-                    GameBackEnd.GameOver = true;
+                    MainBackendLogic.GameOver = true;
                     break;
                 case 1:
-                    GameFrontEnd.DifficultyChooseWindow();
+                    MainFrontendLogic.DifficultyChooseWindow();
                     break;
             }
         }
 
         public static void DifficultyChooserWindowCorrectInput()
         {
-            switch (GameBackEnd.CurrentInput)
+            switch (MainBackendLogic.CurrentInput)
             {
                 case 0:
-                    GameFrontEnd.MainWindow();
+                    MainFrontendLogic.MainWindow();
                     break;
                 case 1:
-                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(1));
+                    CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(1));
                     break;
                 case 2:
-                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(2));
+                    CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(2));
                     break;
                 case 3:
-                    CreateGameWindow(Difficulty.GetDifficultyEnumByNumber(3));
+                    CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(3));
                     break;
             }
         }
@@ -111,30 +112,30 @@ namespace HangmanNewVersion
         {
             if (difficulty != null)
             {
-                GameBackEnd.GuessableWord = TextSource.GetGueassableWord(difficulty);
-                GameBackEnd.ActualCharacters = new List<char>();
-                GameBackEnd.DisplayCharacters = new List<char>();
-                GameBackEnd.IncorrectlyGuessedCharacters = new List<string>();
-                if (GameBackEnd.GuessableWord != null && GameBackEnd.DisplayCharacters != null && GameBackEnd.IncorrectlyGuessedCharacters != null)
+                MainBackendLogic.GuessableWord = TextSource.GetGueassableWord(difficulty);
+                MainBackendLogic.ActualCharacters = new List<char>();
+                MainBackendLogic.DisplayCharacters = new List<char>();
+                MainBackendLogic.IncorrectlyGuessedCharacters = new List<string>();
+                if (MainBackendLogic.GuessableWord != null && MainBackendLogic.DisplayCharacters != null && MainBackendLogic.IncorrectlyGuessedCharacters != null)
                 {
-                    foreach (var c in GameBackEnd.GuessableWord)
+                    foreach (var c in MainBackendLogic.GuessableWord)
                     {
                         if (AllowedSpecialCharacters.Any(x => x == c))
                         {
-                            GameBackEnd.ActualCharacters.Add(c);
+                            MainBackendLogic.ActualCharacters.Add(c);
                         }
                         else
                         {
-                            GameBackEnd.ActualCharacters.Add('_');
+                            MainBackendLogic.ActualCharacters.Add('_');
                         }
 
                     }
 
-                    GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords = GetAllowedMultipleCharactersFromGuessableWord();
+                    MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords = GetAllowedMultipleCharactersFromGuessableWord();
 
-                    ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
+                    ActualListToDisplayListConversion(MainBackendLogic.ActualCharacters);
 
-                    GameFrontEnd.GameWindow();
+                    MainFrontendLogic.GameWindow();
                 }
             }
         }
@@ -142,23 +143,23 @@ namespace HangmanNewVersion
         public static void ActualListToDisplayListConversion(List<char> actualList)
         {
             List<char> newDipslayList = new List<char>();
-            if (AllowedMultipleCharactersDetected(GameBackEnd.GuessableWord))
+            if (AllowedMultipleCharactersDetected(MainBackendLogic.GuessableWord))
             {
                 int indexSkip = 0;
                 bool multipleCharactersDetectedAtIndex = false;
 
-                for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                for (int i = 0; i < MainBackendLogic.GuessableWord.Length; i++)
                 {
-                    for (int j = 0; j < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
+                    for (int j = 0; j < MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords.Count; j++)
                     {
-                        if ((i + GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length) < GameBackEnd.GuessableWord.Length)
+                        if ((i + MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length) < MainBackendLogic.GuessableWord.Length)
                         {
-                            for (int k = 0; k < GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
+                            for (int k = 0; k < MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length; k++)
                             {
-                                //
+                                
                                 if (
-                                    ((i + k) < GameBackEnd.GuessableWord.Length) &&
-                                    (GameBackEnd.GuessableWord[i + k] == GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
+                                    ((i + k) < MainBackendLogic.GuessableWord.Length) &&
+                                    (MainBackendLogic.GuessableWord[i + k] == MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords[j][k])
                                     )
                                 {
                                     multipleCharactersDetectedAtIndex = true;
@@ -172,7 +173,7 @@ namespace HangmanNewVersion
                         }
                         if (multipleCharactersDetectedAtIndex)
                         {
-                            indexSkip = GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
+                            indexSkip = MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords[j].Length;
                             break;
                         }
                     }
@@ -213,18 +214,18 @@ namespace HangmanNewVersion
                     }
                 }
             }
-            GameBackEnd.DisplayCharacters = newDipslayList;
+            MainBackendLogic.DisplayCharacters = newDipslayList;
         }
 
         public static void ImplementGuess()
         {
-            if (GameBackEnd.CurrentGuess.Length == 1)
+            if (MainBackendLogic.CurrentGuess.Length == 1)
             {
                 bool guessCharIsInMultiWord = false;
                 bool singleCharSuccessfullyAddedToActualList = false;
-                foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
+                foreach (var c in MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords)
                 {
-                    if (c.Contains(GameBackEnd.CurrentGuess))
+                    if (c.Contains(MainBackendLogic.CurrentGuess))
                     {
                         guessCharIsInMultiWord = true;
                         break;
@@ -232,15 +233,15 @@ namespace HangmanNewVersion
                 }
                 if (guessCharIsInMultiWord)
                 {
-                    for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                    for (int i = 0; i < MainBackendLogic.GuessableWord.Length; i++)
                     {
                         bool cicleIsInMultiWord = false;
-                        foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
+                        foreach (var c in MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords)
                         {
                             int indexSkip = 0;
                             for (int j = 0; j < c.Length; j++)
                             {
-                                if (((i + j) < GameBackEnd.GuessableWord.Length) && GameBackEnd.GuessableWord[i + j] == c[j])
+                                if (((i + j) < MainBackendLogic.GuessableWord.Length) && MainBackendLogic.GuessableWord[i + j] == c[j])
                                 {
                                     cicleIsInMultiWord = true;
                                     indexSkip++;
@@ -257,47 +258,47 @@ namespace HangmanNewVersion
                                 break;
                             }
                         }
-                        if (!cicleIsInMultiWord && GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
+                        if (!cicleIsInMultiWord && MainBackendLogic.GuessableWord[i] == char.Parse(MainBackendLogic.CurrentGuess))
                         {
-                            GameBackEnd.ActualCharacters[i] = char.Parse(GameBackEnd.CurrentGuess);
+                            MainBackendLogic.ActualCharacters[i] = char.Parse(MainBackendLogic.CurrentGuess);
                             singleCharSuccessfullyAddedToActualList = true;
                         }
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                    for (int i = 0; i < MainBackendLogic.GuessableWord.Length; i++)
                     {
-                        if (GameBackEnd.GuessableWord[i] == char.Parse(GameBackEnd.CurrentGuess))
+                        if (MainBackendLogic.GuessableWord[i] == char.Parse(MainBackendLogic.CurrentGuess))
                         {
-                            GameBackEnd.ActualCharacters[i] = char.Parse(GameBackEnd.CurrentGuess);
+                            MainBackendLogic.ActualCharacters[i] = char.Parse(MainBackendLogic.CurrentGuess);
                             singleCharSuccessfullyAddedToActualList = true;
                         }
                     }
                 }
-                if (!singleCharSuccessfullyAddedToActualList && !GameBackEnd.IncorrectlyGuessedCharacters.Contains(GameBackEnd.CurrentGuess))
+                if (!singleCharSuccessfullyAddedToActualList && !MainBackendLogic.IncorrectlyGuessedCharacters.Contains(MainBackendLogic.CurrentGuess))
                 {
-                    GameBackEnd.IncorrectlyGuessedCharacters.Add(GameBackEnd.CurrentGuess);
-                    GameBackEnd.AttemptsLeft--;
+                    MainBackendLogic.IncorrectlyGuessedCharacters.Add(MainBackendLogic.CurrentGuess);
+                    MainBackendLogic.AttemptsLeft--;
                 }
 
             }
             else
             {
-                for (int i = 0; i < GameBackEnd.GuessableWord.Length; i++)
+                for (int i = 0; i < MainBackendLogic.GuessableWord.Length; i++)
                 {
                     bool cicleIsInMultiWord = false;
                     bool multiWordIsGuessedWord = false;
-                    foreach (var c in GameBackEnd.CurrentAllowedMultipleCharacterWordInGueassableWords)
+                    foreach (var c in MainBackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords)
                     {
                         int indexSkip = 0;
                         for (int j = 0; j < c.Length; j++)
                         {
-                            if (((i + j) < GameBackEnd.GuessableWord.Length) && GameBackEnd.GuessableWord[i + j] == c[j])
+                            if (((i + j) < MainBackendLogic.GuessableWord.Length) && MainBackendLogic.GuessableWord[i + j] == c[j])
                             {
                                 cicleIsInMultiWord = true;
                                 indexSkip++;
-                                if (!(GameBackEnd.CurrentGuess.Length < c.Length) && GameBackEnd.CurrentGuess[j] == c[j])
+                                if (!(MainBackendLogic.CurrentGuess.Length < c.Length) && MainBackendLogic.CurrentGuess[j] == c[j])
                                 {
                                     multiWordIsGuessedWord = true;
                                 }
@@ -318,7 +319,7 @@ namespace HangmanNewVersion
                             {
                                 for (int j = 0; j < c.Length; j++)
                                 {
-                                    GameBackEnd.ActualCharacters[i + j] = c[j];
+                                    MainBackendLogic.ActualCharacters[i + j] = c[j];
                                 }
                             }
                             i += indexSkip - 1;
@@ -328,28 +329,28 @@ namespace HangmanNewVersion
                 }
             }
 
-            ActualListToDisplayListConversion(GameBackEnd.ActualCharacters);
-            GameFrontEnd.GameWindow();
+            ActualListToDisplayListConversion(MainBackendLogic.ActualCharacters);
+            MainFrontendLogic.GameWindow();
         }
 
         public static void IncorrectGuessLogic()
         {
-            if (!GameBackEnd.IncorrectlyGuessedCharacters.Contains(GameBackEnd.CurrentGuess))
+            if (!MainBackendLogic.IncorrectlyGuessedCharacters.Contains(MainBackendLogic.CurrentGuess))
             {
-                GameBackEnd.IncorrectlyGuessedCharacters.Add(GameBackEnd.CurrentGuess);
-                GameBackEnd.AttemptsLeft--;
+                MainBackendLogic.IncorrectlyGuessedCharacters.Add(MainBackendLogic.CurrentGuess);
+                MainBackendLogic.AttemptsLeft--;
             }
-            GameFrontEnd.GameWindow();
+            MainFrontendLogic.GameWindow();
 
         }
 
         public static int GameOverCheck()
         {
-            if (!GameBackEnd.ActualCharacters.Contains('_'))
+            if (!MainBackendLogic.ActualCharacters.Contains('_'))
             {
                 return 0;
             }
-            else if (GameBackEnd.AttemptsLeft == 0)
+            else if (MainBackendLogic.AttemptsLeft == 0)
             {
                 return -1;
             }
@@ -358,24 +359,24 @@ namespace HangmanNewVersion
         }
         public static string? GetCurrentHangmanDrawingByAttemptsLeft()
         {
-            switch (GameBackEnd.AttemptsLeft)
+            switch (MainBackendLogic.AttemptsLeft)
             {
                 case 7:
-                    return GameBackEnd.hangmanPics[0];
+                    return MainBackendLogic.hangmanPics[0];
                 case 6:
-                    return GameBackEnd.hangmanPics[1];
+                    return MainBackendLogic.hangmanPics[1];
                 case 5:
-                    return GameBackEnd.hangmanPics[2];
+                    return MainBackendLogic.hangmanPics[2];
                 case 4:
-                    return GameBackEnd.hangmanPics[3];
+                    return MainBackendLogic.hangmanPics[3];
                 case 3:
-                    return GameBackEnd.hangmanPics[4];
+                    return MainBackendLogic.hangmanPics[4];
                 case 2:
-                    return GameBackEnd.hangmanPics[5];
+                    return MainBackendLogic.hangmanPics[5];
                 case 1:
-                    return GameBackEnd.hangmanPics[6];
+                    return MainBackendLogic.hangmanPics[6];
                 case 0:
-                    return GameBackEnd.hangmanPics[7];
+                    return MainBackendLogic.hangmanPics[7];
                 default:
                     return null;
             }

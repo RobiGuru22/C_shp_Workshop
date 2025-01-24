@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HangmanFrontendLibrary;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
-    public class GameBackEnd
+    public class MainBackendLogic
     {
         public static bool GameOver = false;
         public static int CurrentInput { get; set; }
@@ -38,10 +39,10 @@ namespace HangmanNewVersion
             List<int> correctInputs = new List<int> { 0, 1 };
             if (!UserInputChecker.IsInputCorrect(correctInputs))
             {
-                GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
+                MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
             }
 
-            GameBackendHelper.MainWindowCorrectInput();
+            BackendHelperLogic.MainWindowCorrectInput();
         }
 
         public static void DifficultyChooserWindowLogic()
@@ -49,32 +50,32 @@ namespace HangmanNewVersion
             List<int> correctInputs = new List<int> { 0, 1, 2, 3 };
             if (!UserInputChecker.IsInputCorrect(correctInputs))
             {
-                GameFrontEnd.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
+                MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
             }
 
-            GameBackendHelper.DifficultyChooserWindowCorrectInput();
+            BackendHelperLogic.DifficultyChooserWindowCorrectInput();
         }
 
         public static void GameWindowLogic()
         {
-            if (GameBackendHelper.GameOverCheck() > 0)
+            if (BackendHelperLogic.GameOverCheck() > 0)
             {
                 if (!UserInputChecker.IsGuessFormatCorrect())
                 {
-                    GameFrontEnd.IncorrectGuessFormatText();
+                    MainFrontendLogic.IncorrectGuessFormatText();
                 }
                 else if (!UserInputChecker.IsGuessCorrect())
                 {
-                    GameBackendHelper.IncorrectGuessLogic();
+                    BackendHelperLogic.IncorrectGuessLogic();
                 }
                 else
                 {
-                    GameBackendHelper.ImplementGuess();
+                    BackendHelperLogic.ImplementGuess();
                 }
             }
             else
             {
-                GameFrontEnd.GameOverWindow(GameOverWindow.GetEnumByInt(GameBackendHelper.GameOverCheck()));
+                MainFrontendLogic.GameOverWindow(GameOverWindowState.GetEnumByInt(BackendHelperLogic.GameOverCheck()));
                 GameOver = true;
             }
         }
@@ -88,25 +89,25 @@ namespace HangmanNewVersion
                 case ActiveWindowEnum.MAIN_WINDOW_ACTIVE:
                     if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
-                        GameFrontEnd.WrongInputTextClear();
-                        GameFrontEnd.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
+                        MainFrontendLogic.WrongInputTextClear();
+                        MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                     }
                     else
                     {
                         CurrentInput = inputNumber;
-                        GameBackendHelper.MainWindowCorrectInput();
+                        BackendHelperLogic.MainWindowCorrectInput();
                     }
                     break;
                 case ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE:
                     if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
                     {
-                        GameFrontEnd.WrongInputTextClear();
-                        GameFrontEnd.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
+                        MainFrontendLogic.WrongInputTextClear();
+                        MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
                     }
                     else
                     {
                         CurrentInput = inputNumber;
-                        GameBackendHelper.DifficultyChooserWindowCorrectInput();
+                        BackendHelperLogic.DifficultyChooserWindowCorrectInput();
                     }
                     break;
             }
@@ -120,17 +121,17 @@ namespace HangmanNewVersion
                 inputGuess == null ||
                 GuessableWord == null ||
                 int.TryParse(inputGuess, out int temp) ||
-                (inputGuess.Length > 1 && !GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputGuess))
+                (inputGuess.Length > 1 && !BackendHelperLogic.AllowedMultipleCharacters.Any(x => x == inputGuess))
             )
             {
-                GameFrontEnd.WrongGuessFormatTextClear();
-                GameFrontEnd.IncorrectGuessFormatText();
+                MainFrontendLogic.WrongGuessFormatTextClear();
+                MainFrontendLogic.IncorrectGuessFormatText();
             }
             else
             {
                 CurrentGuess = inputGuess;
-                GameBackendHelper.ImplementGuess();
-                GameFrontEnd.GameWindow();
+                BackendHelperLogic.ImplementGuess();
+                MainFrontendLogic.GameWindow();
             }
         }
     }

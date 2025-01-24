@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="HangmanBackendLibrary">
+      <HintPath>..\..\HangmanBackendLibrary\HangmanBackendLibrary\bin\Debug\net8.0\HangmanBackendLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

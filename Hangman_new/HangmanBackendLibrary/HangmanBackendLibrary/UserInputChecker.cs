@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HangmanNewVersion
+namespace HangmanBackendLibrary
 {
     public class UserInputChecker
     {
-        
+
         public static bool IsInputCorrect(List<int> acceptableInputs)
         {
             string? inputString = Console.ReadLine();
@@ -16,7 +16,7 @@ namespace HangmanNewVersion
             {
                 return false;
             }
-            GameBackEnd.CurrentInput = inputNumber;
+            MainBackendLogic.CurrentInput = inputNumber;
             return true;
         }
 
@@ -26,18 +26,18 @@ namespace HangmanNewVersion
             if (
                 inputString == null ||
                 int.TryParse(inputString, out int temp) ||
-                (inputString.Length > 1 && !GameBackendHelper.AllowedMultipleCharacters.Any(x => x == inputString))
+                (inputString.Length > 1 && !BackendHelperLogic.AllowedMultipleCharacters.Any(x => x == inputString))
                 )
             {
                 return false;
             }
-            GameBackEnd.CurrentGuess = inputString;
+            MainBackendLogic.CurrentGuess = inputString;
             return true;
         }
 
         public static bool IsGuessCorrect()
         {
-            if (!GameBackEnd.GuessableWord.Contains(GameBackEnd.CurrentGuess))
+            if (!MainBackendLogic.GuessableWord.Contains(MainBackendLogic.CurrentGuess))
             {
                 return false;
             }
