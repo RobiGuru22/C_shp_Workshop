@@ -93,7 +93,7 @@ namespace HangmanNewVersion.Backend
 
         public static int DifficultyChooserWindowCorrectInput()
         {
-            if(BackendLogic.CurrentInput > -1)
+            if(BackendLogic.CurrentInput > 0)
             {
                 return BackendLogic.CurrentInput;
             }

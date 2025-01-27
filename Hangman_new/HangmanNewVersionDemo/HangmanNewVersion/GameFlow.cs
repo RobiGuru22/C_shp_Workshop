@@ -11,8 +11,6 @@ namespace HangmanNewVersion
 {
     public class GameFlow
     {
-        public static string txtSourcePath { get; set; }
-        public static bool gameOver = false;
 
         public static void StartGame()
         {
@@ -35,7 +33,7 @@ namespace HangmanNewVersion
                     {
                         if (BackendHelper.MainWindowCorrectInput() == 0)
                         {
-                            gameOver = true;
+                            BackendLogic.GameOver = true;
                         }
                         else
                         {
@@ -47,7 +45,7 @@ namespace HangmanNewVersion
                 case 0:
                     if(BackendHelper.MainWindowCorrectInput() == 0)
                     {
-                        gameOver = true;
+                        BackendLogic.GameOver = true;
                     }
                     else
                     {
@@ -99,7 +97,12 @@ namespace HangmanNewVersion
         public static void GameWindowFlow(int chosenDifficulty)
         {
             BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(chosenDifficulty));
-            FrontendLogic.GameWindow(BackendLogic.DisplayCharacters, BackendLogic.AttemptsLeft, BackendLogic.IncorrectlyGuessedCharacters, BackendHelper.GetCurrentHangmanDrawingByAttemptsLeft());
+            FrontendLogic.GameWindow(
+                BackendLogic.DisplayCharacters, 
+                BackendLogic.AttemptsLeft, 
+                BackendLogic.IncorrectlyGuessedCharacters, 
+                BackendHelper.GetCurrentHangmanDrawingByAttemptsLeft()
+                );
             switch(BackendLogic.GameWindowLogic())
             {
                 case -1:
@@ -138,7 +141,7 @@ namespace HangmanNewVersion
             {
                 FrontendLogic.VictoryWindow(BackendLogic.IncorrectlyGuessedCharacters);
             }
-            gameOver = true;
+            BackendLogic.GameOver = true;
         }
     }
 }
