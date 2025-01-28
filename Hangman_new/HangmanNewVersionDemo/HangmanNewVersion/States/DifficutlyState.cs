@@ -12,6 +12,8 @@ namespace HangmanNewVersion.States
         {
             switch (difficultyNumber)
             {
+                case 0:
+                    return DifficultyEnum.DEFAULT;
                 case 1:
                     return DifficultyEnum.EASY;
                 case 2:
@@ -26,6 +28,7 @@ namespace HangmanNewVersion.States
 
     public enum DifficultyEnum
     {
+        DEFAULT,
         EASY,
         MEDIUM,
         HARD

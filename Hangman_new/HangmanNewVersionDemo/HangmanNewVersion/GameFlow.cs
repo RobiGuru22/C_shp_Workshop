@@ -12,27 +12,27 @@ namespace HangmanNewVersion
 {
     public class GameFlow
     {
-
+        public static bool AlreadyInWrongGuessFormatState = false;
         public static void StartGame()
         {
             FrontendLogic.MainWindow();
             MainWindowFlow(BackendLogic.MainWindowLogic());
         }
 
-        public static void MainWindowFlow(int mainWindowInputResult)
+        public static void MainWindowFlow(MainWindowLogicStateEnum mainWindowInputResult)
         {
             switch (mainWindowInputResult)
             {
-                case -1:
+                case MainWindowLogicStateEnum.INCORRECT_INPUT:
                     FrontendLogic.IncorrectInputText();
-                    if(BackendLogic.IncorrectMainWindowInputLogic() == -1)
+                    if(BackendLogic.IncorrectMainWindowInputLogic() == IncorrectInputMainWindowLogicStateEnum.INCORRECT_INPUT)
                     {
                         FrontendHelper.WrongInputTextClear();
-                        MainWindowFlow(-1);
+                        MainWindowFlow(MainWindowLogicStateEnum.INCORRECT_INPUT);
                     }
                     else
                     {
-                        if (BackendHelper.MainWindowCorrectInput() == 0)
+                        if (BackendHelper.MainWindowCorrectInput() == CorrectInputMainWindowLogicStateEnum.GAMEOVER)
                         {
                             BackendLogic.GameOver = true;
                         }
@@ -43,8 +43,8 @@ namespace HangmanNewVersion
                         }
                     }
                     break;
-                case 0:
-                    if(BackendHelper.MainWindowCorrectInput() == 0)
+                case MainWindowLogicStateEnum.CORRECT_INPUT:
+                    if(BackendHelper.MainWindowCorrectInput() == CorrectInputMainWindowLogicStateEnum.GAMEOVER)
                     {
                         BackendLogic.GameOver = true;
                     }
@@ -56,74 +56,85 @@ namespace HangmanNewVersion
                     break;
                 default:
                     FrontendHelper.WrongInputTextClear();
-                    MainWindowFlow(-1);
+                    MainWindowFlow(MainWindowLogicStateEnum.INCORRECT_INPUT);
                     break;
             }
         }
 
-        public static void DifficultyChooseWindowFlow(int difficultyWindowInputResult)
+        public static void DifficultyChooseWindowFlow(DifficultyChooserWindowLogicStateEnum difficultyWindowInputResult)
         {
             switch(difficultyWindowInputResult)
             {
-                case -1:
+                case DifficultyChooserWindowLogicStateEnum.INCORRECT_DIFFICULTY:
                     FrontendLogic.IncorrectInputText();
-                    if(BackendLogic.IncorrectDifficultyChooseWindowInputLogic() == -1)
+                    if(BackendLogic.IncorrectDifficultyChooseWindowInputLogic() == IncorrectDifficultyChooseWindowInputLogicStateEnum.INCORRECT_DIFFICULTY_INPUT)
                     {
                         FrontendHelper.WrongInputTextClear();
-                        DifficultyChooseWindowFlow(-1);
+                        DifficultyChooseWindowFlow(DifficultyChooserWindowLogicStateEnum.INCORRECT_DIFFICULTY);
                     }
                     else
                     {
-                        if(BackendHelper.DifficultyChooserWindowCorrectInput() == 0)
+                        if(BackendHelper.DifficultyChooserWindowCorrectInput() == DifficultyEnum.DEFAULT)
                         {
                             StartGame();
                         }
                         else
                         {
-                            BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(BackendHelper.DifficultyChooserWindowCorrectInput()));
+                            BackendHelper.CreateGameWindow(BackendHelper.DifficultyChooserWindowCorrectInput());
                             GameWindowFlow();
                         }
                         
                     }
                     break;
-                case 0:
-                    if(BackendHelper.DifficultyChooserWindowCorrectInput() == 0)
+                case DifficultyChooserWindowLogicStateEnum.CORRECT_DIFFICULTY:
+                    if(BackendHelper.DifficultyChooserWindowCorrectInput() == DifficultyEnum.DEFAULT)
                     {
                         StartGame();
                     }
                     else
                     {
-                        BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(BackendHelper.DifficultyChooserWindowCorrectInput()));
+                        BackendHelper.CreateGameWindow(BackendHelper.DifficultyChooserWindowCorrectInput());
                         GameWindowFlow();
                     }
                     
                     break;
                 default:
                     FrontendHelper.WrongInputTextClear();
-                    DifficultyChooseWindowFlow(-1);
+                    DifficultyChooseWindowFlow(DifficultyChooserWindowLogicStateEnum.INCORRECT_DIFFICULTY);
                     break;
             }
         }
 
         public static void GameWindowFlow()
-        {   
-            FrontendLogic.GameWindow(
-                BackendLogic.DisplayCharacters, 
-                BackendLogic.AttemptsLeft, 
-                BackendLogic.IncorrectlyGuessedCharacters, 
+        {
+            if(!AlreadyInWrongGuessFormatState)
+            {
+                FrontendLogic.GameWindow(
+                BackendLogic.DisplayCharacters,
+                BackendLogic.AttemptsLeft,
+                BackendLogic.IncorrectlyGuessedCharacters,
                 BackendHelper.GetCurrentHangmanDrawingByAttemptsLeft()
                 );
-            switch(BackendLogic.GameWindowLogic())
+            }
+            switch (BackendLogic.GameWindowLogic())
             {
-                case -1:
-                    GameOverWindowFlow(-1);
+                case GameWindowLogicStateEnum.GAMEOVER:
+                    GameOverWindowFlow(BackendHelper.GameOverCheck());
                     break;
-                case 0:
-                    GameOverWindowFlow(0);
-                    break;
-                case 1:
-                    FrontendLogic.IncorrectGuessFormatText();
-                    if(BackendLogic.IncorrectGuessFormatTextLogic() == -1)
+                case GameWindowLogicStateEnum.INCORRECT_GUESS_FORMAT:
+                    if(!AlreadyInWrongGuessFormatState)
+                    {
+                        FrontendLogic.IncorrectGuessFormatText();
+                    }
+                    else
+                    {
+                        FrontendHelper.WrongInputTextClear();
+                        FrontendLogic.IncorrectGuessFormatText();
+                    }
+                    
+                    AlreadyInWrongGuessFormatState = true;
+
+                    if (BackendLogic.IncorrectGuessFormatTextLogic() == IncorrectGuessFormatLogicStateEnum.INCORRECT_GUESS)
                     {
                         FrontendHelper.WrongInputTextClear();
                         FrontendLogic.IncorrectGuessFormatText();
@@ -131,32 +142,35 @@ namespace HangmanNewVersion
                     }
                     else
                     {
-                        FrontendHelper.WrongInputTextClear();
+                        AlreadyInWrongGuessFormatState = false;
                         BackendHelper.ImplementGuess();
                         GameWindowFlow();
                     }
                     break;
-                case 2:
+                case GameWindowLogicStateEnum.INCORRECT_GUESS:
+                    AlreadyInWrongGuessFormatState = false;
                     BackendHelper.IncorrectGuessLogic();
                     BackendHelper.ImplementGuess();
                     GameWindowFlow();
                     break;
-                case 3:
+                case GameWindowLogicStateEnum.CORRECT_GUESS:
+                    AlreadyInWrongGuessFormatState = false;
                     BackendHelper.ImplementGuess();
                     GameWindowFlow();
                     break;
             }
         }
 
-        public static void GameOverWindowFlow(int gameOverState)
+        public static void GameOverWindowFlow(GameOverEnum gameOverState)
         {
-            if(gameOverState == -1)
+            switch(gameOverState)
             {
-                FrontendLogic.DefeatWindow(BackendLogic.GuessableWord);
-            }
-            else
-            {
-                FrontendLogic.VictoryWindow(BackendLogic.IncorrectlyGuessedCharacters);
+                case GameOverEnum.WIN:
+                    FrontendLogic.VictoryWindow(BackendLogic.IncorrectlyGuessedCharacters);
+                    break;
+                case GameOverEnum.LOSE:
+                    FrontendLogic.DefeatWindow(BackendLogic.GuessableWord);
+                    break;
             }
             BackendLogic.GameOver = true;
         }

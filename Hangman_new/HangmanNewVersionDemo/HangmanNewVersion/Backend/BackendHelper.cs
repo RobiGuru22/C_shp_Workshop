@@ -28,6 +28,7 @@ namespace HangmanNewVersion.Backend
                 "dzs",
                 "gy",
                 "ly",
+                "ny",
                 "sz",
                 "ty",
                 "zs"
@@ -78,28 +79,27 @@ namespace HangmanNewVersion.Backend
             return allowedMultipleCharactersInWord;
         }
 
-        public static int MainWindowCorrectInput()
+        public static CorrectInputMainWindowLogicStateEnum MainWindowCorrectInput()
         {
             switch (BackendLogic.CurrentInput)
             {
                 case 0:
-                    return 0;
+                    return CorrectInputMainWindowLogicStateEnum.GAMEOVER;
                 case 1:
-                    return 1;
+                    return CorrectInputMainWindowLogicStateEnum.CONTINUE;
                     //MainFrontendLogic.DifficultyChooseWindow();
                 default:
-                    return 0;
-
+                    return CorrectInputMainWindowLogicStateEnum.GAMEOVER;
             }
         }
 
-        public static int DifficultyChooserWindowCorrectInput()
+        public static DifficultyEnum? DifficultyChooserWindowCorrectInput()
         {
             if(BackendLogic.CurrentInput > -1)
             {
-                return BackendLogic.CurrentInput;
+                return DifficultyState.GetDifficultyEnumByNumber(BackendLogic.CurrentInput);
             }
-            return -1;
+            return null;
             //switch (BackendLogic.CurrentInput)
             //{
             //    case 0:
@@ -295,6 +295,7 @@ namespace HangmanNewVersion.Backend
             }
             else
             {
+                bool wordFoundAtLeastOnce = false;
                 for (int i = 0; i < BackendLogic.GuessableWord.Length; i++)
                 {
                     bool cicleIsInMultiWord = false;
@@ -331,11 +332,17 @@ namespace HangmanNewVersion.Backend
                                 {
                                     BackendLogic.ActualCharacters[i + j] = c[j];
                                 }
+                                wordFoundAtLeastOnce = true;
                             }
                             i += indexSkip - 1;
                             break;
                         }
                     }
+                }
+                if (!wordFoundAtLeastOnce && !BackendLogic.IncorrectlyGuessedCharacters.Contains(BackendLogic.CurrentGuess))
+                {
+                    BackendLogic.IncorrectlyGuessedCharacters.Add(BackendLogic.CurrentGuess);
+                    BackendLogic.AttemptsLeft--;
                 }
             }
 
@@ -354,18 +361,18 @@ namespace HangmanNewVersion.Backend
 
         }
 
-        public static int GameOverCheck()
+        public static GameOverEnum GameOverCheck()
         {
             
             if (!BackendLogic.ActualCharacters.Contains('_'))
             {
-                return 0;
+                return GameOverEnum.WIN;
             }
             else if (BackendLogic.AttemptsLeft == 0)
             {
-                return -1;
+                return GameOverEnum.LOSE;
             }
-            return 1;
+            return GameOverEnum.DEFAULT;
 
         }
         public static string? GetCurrentHangmanDrawingByAttemptsLeft()
