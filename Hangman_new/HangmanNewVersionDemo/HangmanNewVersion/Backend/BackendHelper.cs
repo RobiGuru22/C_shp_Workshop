@@ -29,7 +29,8 @@ namespace HangmanNewVersion.Backend
                 "gy",
                 "ly",
                 "sz",
-                "ty"
+                "ty",
+                "zs"
             };
 
         public static bool AllowedMultipleCharactersDetected(string guessableWord)
@@ -71,6 +72,7 @@ namespace HangmanNewVersion.Backend
                         allowedMultipleCharactersInWord.Add("dz");
                     }
                 }
+                dzsFound = false;
             }
 
             return allowedMultipleCharactersInWord;
@@ -93,7 +95,7 @@ namespace HangmanNewVersion.Backend
 
         public static int DifficultyChooserWindowCorrectInput()
         {
-            if(BackendLogic.CurrentInput > 0)
+            if(BackendLogic.CurrentInput > -1)
             {
                 return BackendLogic.CurrentInput;
             }

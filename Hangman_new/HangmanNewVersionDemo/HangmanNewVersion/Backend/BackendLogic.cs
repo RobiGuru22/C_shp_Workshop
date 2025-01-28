@@ -65,17 +65,17 @@ namespace HangmanNewVersion.Backend
             {
                 if (!UserInputChecker.IsGuessFormatCorrect())
                 {
-                    return 0;
+                    return 1;
                     //MainFrontendLogic.IncorrectGuessFormatText();
                 }
                 else if (!UserInputChecker.IsGuessCorrect())
                 {
-                    return 1;
+                    return 2;
                     //BackendHelper.IncorrectGuessLogic();
                 }
                 else
                 {
-                    return 2;
+                    return 3;
                     //BackendHelper.ImplementGuess();
                 }
             }
@@ -83,7 +83,7 @@ namespace HangmanNewVersion.Backend
             {
                 //MainFrontendLogic.GameOverWindow(GameOverWindowState.GetEnumByInt(BackendHelper.GameOverCheck()));
                 //GameOver = true;
-                return -1;
+                return BackendHelper.GameOverCheck();
             }
         }
 

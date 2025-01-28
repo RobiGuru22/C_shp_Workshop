@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HangmanNewVersion.Frontend;
 using HangmanNewVersion.Backend;
 using HangmanNewVersion.States;
+using System.Windows.Markup;
 
 namespace HangmanNewVersion
 {
@@ -73,7 +74,16 @@ namespace HangmanNewVersion
                     }
                     else
                     {
-                        GameWindowFlow(BackendHelper.DifficultyChooserWindowCorrectInput());
+                        if(BackendHelper.DifficultyChooserWindowCorrectInput() == 0)
+                        {
+                            StartGame();
+                        }
+                        else
+                        {
+                            BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(BackendHelper.DifficultyChooserWindowCorrectInput()));
+                            GameWindowFlow();
+                        }
+                        
                     }
                     break;
                 case 0:
@@ -83,7 +93,8 @@ namespace HangmanNewVersion
                     }
                     else
                     {
-                        GameWindowFlow(BackendHelper.DifficultyChooserWindowCorrectInput());
+                        BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(BackendHelper.DifficultyChooserWindowCorrectInput()));
+                        GameWindowFlow();
                     }
                     
                     break;
@@ -94,9 +105,8 @@ namespace HangmanNewVersion
             }
         }
 
-        public static void GameWindowFlow(int chosenDifficulty)
-        {
-            BackendHelper.CreateGameWindow(DifficultyState.GetDifficultyEnumByNumber(chosenDifficulty));
+        public static void GameWindowFlow()
+        {   
             FrontendLogic.GameWindow(
                 BackendLogic.DisplayCharacters, 
                 BackendLogic.AttemptsLeft, 
@@ -107,26 +117,33 @@ namespace HangmanNewVersion
             {
                 case -1:
                     GameOverWindowFlow(-1);
-                    return;
+                    break;
                 case 0:
+                    GameOverWindowFlow(0);
+                    break;
+                case 1:
                     FrontendLogic.IncorrectGuessFormatText();
                     if(BackendLogic.IncorrectGuessFormatTextLogic() == -1)
                     {
                         FrontendHelper.WrongInputTextClear();
-                        GameWindowFlow(chosenDifficulty);
+                        FrontendLogic.IncorrectGuessFormatText();
+                        GameWindowFlow();
                     }
                     else
                     {
+                        FrontendHelper.WrongInputTextClear();
                         BackendHelper.ImplementGuess();
-                        GameWindowFlow(chosenDifficulty);
+                        GameWindowFlow();
                     }
                     break;
-                case 1:
-                    BackendHelper.IncorrectGuessLogic();
-                    GameWindowFlow(chosenDifficulty);
-                    break;
                 case 2:
-
+                    BackendHelper.IncorrectGuessLogic();
+                    BackendHelper.ImplementGuess();
+                    GameWindowFlow();
+                    break;
+                case 3:
+                    BackendHelper.ImplementGuess();
+                    GameWindowFlow();
                     break;
             }
         }

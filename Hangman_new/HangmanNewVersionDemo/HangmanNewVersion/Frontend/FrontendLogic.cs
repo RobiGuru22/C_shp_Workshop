@@ -56,7 +56,7 @@ namespace HangmanNewVersion.Frontend
             Console.Clear();
             Console.WriteLine("Guess the word\n");
             Console.WriteLine(string.Join("", displayCharacters) + "\n");
-            //Console.WriteLine(BackendLogic.GuessableWord);
+            Console.WriteLine(BackendLogic.GuessableWord);
             Console.WriteLine($"Attempts left: {attemptsLeft}");
             Console.Write("Wrong attempts: ");
             for (int i = 0; i < incorrectlyGuessedCharacters.Count; i++)
