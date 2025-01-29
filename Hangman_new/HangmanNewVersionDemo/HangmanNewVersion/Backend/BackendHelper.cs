@@ -286,10 +286,9 @@ namespace HangmanNewVersion.Backend
                         }
                     }
                 }
-                if (!singleCharSuccessfullyAddedToActualList && !BackendLogic.IncorrectlyGuessedCharacters.Contains(BackendLogic.CurrentGuess))
+                if (!singleCharSuccessfullyAddedToActualList)
                 {
-                    BackendLogic.IncorrectlyGuessedCharacters.Add(BackendLogic.CurrentGuess);
-                    BackendLogic.AttemptsLeft--;
+                    IncorrectGuessLogic();
                 }
 
             }
@@ -298,7 +297,7 @@ namespace HangmanNewVersion.Backend
                 bool wordFoundAtLeastOnce = false;
                 for (int i = 0; i < BackendLogic.GuessableWord.Length; i++)
                 {
-                    bool cicleIsInMultiWord = false;
+                    //bool cicleIsInMultiWord = false;
                     bool multiWordIsGuessedWord = false;
                     foreach (var c in BackendLogic.CurrentAllowedMultipleCharacterWordInGueassableWords)
                     {
@@ -307,7 +306,7 @@ namespace HangmanNewVersion.Backend
                         {
                             if (((i + j) < BackendLogic.GuessableWord.Length) && BackendLogic.GuessableWord[i + j] == c[j])
                             {
-                                cicleIsInMultiWord = true;
+                                //cicleIsInMultiWord = true;
                                 indexSkip++;
                                 if (!(BackendLogic.CurrentGuess.Length < c.Length) && BackendLogic.CurrentGuess[j] == c[j])
                                 {
@@ -316,38 +315,35 @@ namespace HangmanNewVersion.Backend
                                 else
                                 {
                                     multiWordIsGuessedWord = false;
+                                    break;
                                 }
                             }
                             else
                             {
-                                cicleIsInMultiWord = false;
                                 multiWordIsGuessedWord = false;
+                                break;
                             }
                         }
-                        if (cicleIsInMultiWord)
+
+                        if (multiWordIsGuessedWord)
                         {
-                            if (multiWordIsGuessedWord)
+                            for (int j = 0; j < c.Length; j++)
                             {
-                                for (int j = 0; j < c.Length; j++)
-                                {
-                                    BackendLogic.ActualCharacters[i + j] = c[j];
-                                }
-                                wordFoundAtLeastOnce = true;
+                                BackendLogic.ActualCharacters[i + j] = c[j];
                             }
+                            wordFoundAtLeastOnce = true;
                             i += indexSkip - 1;
                             break;
                         }
                     }
                 }
-                if (!wordFoundAtLeastOnce && !BackendLogic.IncorrectlyGuessedCharacters.Contains(BackendLogic.CurrentGuess))
+                if (!wordFoundAtLeastOnce)
                 {
-                    BackendLogic.IncorrectlyGuessedCharacters.Add(BackendLogic.CurrentGuess);
-                    BackendLogic.AttemptsLeft--;
+                    IncorrectGuessLogic();
                 }
             }
 
             ActualListToDisplayListConversion(BackendLogic.ActualCharacters);
-            //MainFrontendLogic.GameWindow();
         }
 
         public static void IncorrectGuessLogic()
@@ -357,8 +353,6 @@ namespace HangmanNewVersion.Backend
                 BackendLogic.IncorrectlyGuessedCharacters.Add(BackendLogic.CurrentGuess);
                 BackendLogic.AttemptsLeft--;
             }
-            //MainFrontendLogic.GameWindow();
-
         }
 
         public static GameOverEnum GameOverCheck()

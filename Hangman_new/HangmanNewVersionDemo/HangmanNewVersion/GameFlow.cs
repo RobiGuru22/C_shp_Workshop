@@ -147,13 +147,7 @@ namespace HangmanNewVersion
                         GameWindowFlow();
                     }
                     break;
-                case GameWindowLogicStateEnum.INCORRECT_GUESS:
-                    AlreadyInWrongGuessFormatState = false;
-                    BackendHelper.IncorrectGuessLogic();
-                    BackendHelper.ImplementGuess();
-                    GameWindowFlow();
-                    break;
-                case GameWindowLogicStateEnum.CORRECT_GUESS:
+                case GameWindowLogicStateEnum.IMPLEMENTABLE_GUESS:
                     AlreadyInWrongGuessFormatState = false;
                     BackendHelper.ImplementGuess();
                     GameWindowFlow();

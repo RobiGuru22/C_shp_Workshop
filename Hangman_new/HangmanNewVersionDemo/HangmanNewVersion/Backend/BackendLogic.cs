@@ -68,14 +68,9 @@ namespace HangmanNewVersion.Backend
                     return GameWindowLogicStateEnum.INCORRECT_GUESS_FORMAT;
                     //MainFrontendLogic.IncorrectGuessFormatText();
                 }
-                else if (!UserInputChecker.IsGuessCorrect())
-                {
-                    return GameWindowLogicStateEnum.INCORRECT_GUESS;
-                    //BackendHelper.IncorrectGuessLogic();
-                }
                 else
                 {
-                    return GameWindowLogicStateEnum.CORRECT_GUESS;
+                    return GameWindowLogicStateEnum.IMPLEMENTABLE_GUESS;
                     //BackendHelper.ImplementGuess();
                 }
             }

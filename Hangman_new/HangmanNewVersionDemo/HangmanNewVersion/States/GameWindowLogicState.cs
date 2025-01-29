@@ -9,8 +9,7 @@ namespace HangmanNewVersion.States
     public enum GameWindowLogicStateEnum
     {
         INCORRECT_GUESS_FORMAT,
-        INCORRECT_GUESS,
-        CORRECT_GUESS,
+        IMPLEMENTABLE_GUESS,
         GAMEOVER
     }
 }
