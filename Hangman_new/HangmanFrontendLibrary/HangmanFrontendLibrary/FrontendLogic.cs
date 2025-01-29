@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HangmanNewVersion.Backend;
 
 namespace HangmanNewVersion.Frontend
 {
@@ -17,21 +16,18 @@ namespace HangmanNewVersion.Frontend
             Console.WriteLine("[1] Play");
             Console.WriteLine("[0] Quit");
             Console.Write("Input: ");
-            //BackendLogic.MainWindowLogic();
         }
 
         public static void IncorrectInputText()
         {
             Console.WriteLine("\nWrong input, please try again!");
             Console.Write("Input: ");
-            //BackendLogic.IncorrectInputTextLogic(activeWindowEnum);
         }
 
         public static void IncorrectGuessFormatText()
         {
             Console.WriteLine("\nWrong guess format, please try again!");
             Console.Write("Guess: ");
-            //BackendLogic.IncorrectGuessFormatTextLogic();
         }
 
         public static void DifficultyChooseWindow()
@@ -43,7 +39,6 @@ namespace HangmanNewVersion.Frontend
             Console.WriteLine("[3] Hard (10+ word)");
             Console.WriteLine("[0] Back to main menu");
             Console.Write("Input: ");
-            //BackendLogic.DifficultyChooserWindowLogic();
         }
 
         public static void GameWindow(
@@ -56,7 +51,6 @@ namespace HangmanNewVersion.Frontend
             Console.Clear();
             Console.WriteLine("Guess the word\n");
             Console.WriteLine(string.Join("", displayCharacters) + "\n");
-            Console.WriteLine(BackendLogic.GuessableWord);
             Console.WriteLine($"Attempts left: {attemptsLeft}");
             Console.Write("Wrong attempts: ");
             for (int i = 0; i < incorrectlyGuessedCharacters.Count; i++)
@@ -72,7 +66,6 @@ namespace HangmanNewVersion.Frontend
             }
             Console.WriteLine(drawableHangman);
             Console.Write("\n\nGuess: ");
-            //BackendLogic.GameWindowLogic();
         }
 
         public static void VictoryWindow(List<string> incorrectlyGuessedCharacters)

@@ -39,11 +39,9 @@ namespace HangmanNewVersion.Backend
             List<int> correctInputs = new List<int> { 0, 1 };
             if (!UserInputChecker.IsInputCorrect(correctInputs))
             {
-                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                 return MainWindowLogicStateEnum.INCORRECT_INPUT;
             }
 
-            //BackendHelper.MainWindowCorrectInput();
             return MainWindowLogicStateEnum.CORRECT_INPUT;
         }
 
@@ -52,10 +50,8 @@ namespace HangmanNewVersion.Backend
             List<int> correctInputs = new List<int> { 0, 1, 2, 3 };
             if (!UserInputChecker.IsInputCorrect(correctInputs))
             {
-                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
                 return DifficultyChooserWindowLogicStateEnum.INCORRECT_DIFFICULTY;
             }
-            //BackendHelper.DifficultyChooserWindowCorrectInput();
             return DifficultyChooserWindowLogicStateEnum.CORRECT_DIFFICULTY;
         }
 
@@ -66,18 +62,14 @@ namespace HangmanNewVersion.Backend
                 if (!UserInputChecker.IsGuessFormatCorrect())
                 {
                     return GameWindowLogicStateEnum.INCORRECT_GUESS_FORMAT;
-                    //MainFrontendLogic.IncorrectGuessFormatText();
                 }
                 else
                 {
                     return GameWindowLogicStateEnum.IMPLEMENTABLE_GUESS;
-                    //BackendHelper.ImplementGuess();
                 }
             }
             else
             {
-                //MainFrontendLogic.GameOverWindow(GameOverWindowState.GetEnumByInt(BackendHelper.GameOverCheck()));
-                //GameOver = true;
                 return GameWindowLogicStateEnum.GAMEOVER;
             }
         }
@@ -88,14 +80,11 @@ namespace HangmanNewVersion.Backend
             int inputNumber;
             if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
             {
-                //MainFrontendLogic.WrongInputTextClear();
-                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
                 return IncorrectInputMainWindowLogicStateEnum.INCORRECT_INPUT;
             }
             else
             {
                 CurrentInput = inputNumber;
-                //BackendHelper.MainWindowCorrectInput();
                 return IncorrectInputMainWindowLogicStateEnum.CORRECT_INPUT;
             }
         }
@@ -107,50 +96,14 @@ namespace HangmanNewVersion.Backend
 
             if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
             {
-                //MainFrontendLogic.WrongInputTextClear();
-                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
                 return IncorrectDifficultyChooseWindowInputLogicStateEnum.INCORRECT_DIFFICULTY_INPUT;
             }
             else
             {
                 CurrentInput = inputNumber;
-                //BackendHelper.DifficultyChooserWindowCorrectInput();
                 return IncorrectDifficultyChooseWindowInputLogicStateEnum.CORRECT_DIFFICULTY_INPUT;
             }
         }
-
-        //public static void IncorrectInputTextLogic(ActiveWindowEnum activeWindowEnum)
-        //{
-        //    string? inputString = Console.ReadLine();
-        //    int inputNumber;
-        //    switch (activeWindowEnum)
-        //    {
-        //        case ActiveWindowEnum.MAIN_WINDOW_ACTIVE:
-        //            if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
-        //            {
-        //                //MainFrontendLogic.WrongInputTextClear();
-        //                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.MAIN_WINDOW_ACTIVE);
-        //            }
-        //            else
-        //            {
-        //                CurrentInput = inputNumber;
-        //                BackendHelper.MainWindowCorrectInput();
-        //            }
-        //            break;
-        //        case ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE:
-        //            if (!int.TryParse(inputString, out inputNumber) || (inputNumber != 0 && inputNumber != 1))
-        //            {
-        //                //MainFrontendLogic.WrongInputTextClear();
-        //                //MainFrontendLogic.IncorrectInputText(ActiveWindowEnum.DIFFICULTY_CHOOSER_WINDOW_ACTIVE);
-        //            }
-        //            else
-        //            {
-        //                CurrentInput = inputNumber;
-        //                BackendHelper.DifficultyChooserWindowCorrectInput();
-        //            }
-        //            break;
-        //    }
-        //}
 
         public static IncorrectGuessFormatLogicStateEnum IncorrectGuessFormatTextLogic()
         {
@@ -163,15 +116,11 @@ namespace HangmanNewVersion.Backend
                 (inputGuess.Length > 1 && !BackendHelper.AllowedMultipleCharacters.Any(x => x == inputGuess))
             )
             {
-                //MainFrontendLogic.WrongGuessFormatTextClear();
-                //MainFrontendLogic.IncorrectGuessFormatText();
                 return IncorrectGuessFormatLogicStateEnum.INCORRECT_GUESS;
             }
             else
             {
                 CurrentGuess = inputGuess;
-                //BackendHelper.ImplementGuess();
-                //MainFrontendLogic.GameWindow();
                 return IncorrectGuessFormatLogicStateEnum.CORRECT_GUESS;
             }
         }

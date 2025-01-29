@@ -52,7 +52,6 @@ namespace HangmanNewVersion.Backend
                     return possibleWords[rnd.Next(0, possibleWords.Count - 1)];
                 default:
                     return null;
-
             }
         }
     }

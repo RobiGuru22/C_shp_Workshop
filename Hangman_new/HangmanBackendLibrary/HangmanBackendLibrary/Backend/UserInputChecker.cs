@@ -8,7 +8,6 @@ namespace HangmanNewVersion.Backend
 {
     public class UserInputChecker
     {
-
         public static bool IsInputCorrect(List<int> acceptableInputs)
         {
             string? inputString = Console.ReadLine();
